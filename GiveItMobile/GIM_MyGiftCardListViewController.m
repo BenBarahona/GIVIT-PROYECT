@@ -28,6 +28,11 @@
     [super viewDidLoad];
     [self customNavigationButton];
     tableViewGiftCard.backgroundColor=[UIColor clearColor];
+    [self loadGiftCard];
+	// Do any additional setup after loading the view.
+}
+
+-(void)loadGiftCard{
     GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
     
     userModel.userid = @"97";
@@ -38,7 +43,7 @@
     
     [userController myGiftCard:userModel];
     [_mActivityIndicator startAnimating];
-	// Do any additional setup after loading the view.
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -90,86 +95,105 @@
     [cell.mBalance setFont:[UIFont fontWithName:@"DroidSans-Bold" size:15]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     if (indexPath.row<flagitemGiftCardDetailsCount) {
-        if ([[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_name"] != [NSNull null])
-            cell.mGiftCellGiftedByLabel.text = [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_name"];
+        if ([[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"name"] != [NSNull null])
+            cell.mGiftCellGiftedByLabel.text = [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"name"];
+        else
+            cell.mGiftCellGiftedByLabel.text = @"";
+        cell.retailerNameLabel.text = [NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_name"]];
         cell.mGiftCardBalanceLabel.text = [NSString stringWithFormat:@"$%0.2f",[[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"remaining_amount"] floatValue]];
         cell.mCardAmountLabel.text = [NSString stringWithFormat:@"$%0.2f",[[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"orginal_amount"] floatValue]];
     }
     else{
-        cell.mGiftCellGiftedByLabel.text = @"Me";//[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_name"];
+        if ([[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retailer_name"] != [NSNull null])
+            cell.mGiftCellGiftedByLabel.text = [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retailer_name"];//[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_name"];
+        else
+            cell.mGiftCellGiftedByLabel.text = @"";
         cell.mCardAmountLabel.text = [NSString stringWithFormat:@"$%0.2f",[[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"amount"] floatValue]];
         cell.mGiftCardBalanceLabel.text = @"$0.00";
     }
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"] ]];
-    NSURL *urlThumb = [NSURL URLWithString:[NSString stringWithFormat:@"%@", [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_thumb_image"] ]];
-    
-    cell.mGiftCellImageView.image = nil;
-    NSArray *f = [[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"] componentsSeparatedByString:@"/"];
-    NSString *fileName = [f objectAtIndex:f.count-1];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,     NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *getImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-    UIImage *img = [UIImage imageWithContentsOfFile:getImagePath];
-    if ([img isKindOfClass:[UIImage class]]) {
-        cell.mGiftCellImageView.image = img;
+    if ( [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"] == nil ||  [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"] == (id)[NSNull null] || [[NSString stringWithFormat:@"%@", [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"]] length] == 0 || [[[NSString stringWithFormat:@"%@", [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+        cell.mGiftCellImageView.image = [UIImage imageNamed:@"no_image.jpg"];
         [cell.mActivityIndicator stopAnimating];
     }
-    else {
-        if ([[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"] length]<=6) {
-            cell.mGiftCellImageView.image = [UIImage imageNamed:@"no_image.jpg"];
+    else{
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"] ]];
+        
+        cell.mGiftCellImageView.image = nil;
+        NSArray *f = [[NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"]] componentsSeparatedByString:@"/"];
+        NSString *fileName = [f objectAtIndex:f.count-1];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,     NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *getImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+        UIImage *img = [UIImage imageWithContentsOfFile:getImagePath];
+        if ([img isKindOfClass:[UIImage class]]) {
+            cell.mGiftCellImageView.image = img;
             [cell.mActivityIndicator stopAnimating];
         }
-        else{
-            [cell.mActivityIndicator startAnimating];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                NSData *imageData = [NSData dataWithContentsOfURL:url];
+        else {
+            if ([[NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"retaler_full_image"]] length]<=6) {
+                cell.mGiftCellImageView.image = [UIImage imageNamed:@"no_image.jpg"];
+                [cell.mActivityIndicator stopAnimating];
+            }
+            else{
+                [cell.mActivityIndicator startAnimating];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSData *imageData = [NSData dataWithContentsOfURL:url];
+                    
+                    NSString *fileName = [f objectAtIndex:f.count-1];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // Update the UI
+                        
+                        cell.mGiftCellImageView.image = [UIImage imageWithData:imageData];
+                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                        NSString *documentsDirectory = [paths objectAtIndex:0];
+                        NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+                        [imageData writeToFile:savedImagePath atomically:NO];
+                        
+                        [cell.mActivityIndicator stopAnimating];
+                        
+                        
+                    });
+                });
+            }
+        }
+    }
+    NSLog(@"hello%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"]);
+    if ([[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"] == nil || [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"] == (id)[NSNull null] || [[NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"]] length] == 0 || [[[NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+        cell.mGiftCellUserImageView.image = [UIImage imageNamed:@"no_photo.jpg"];
+    }
+    else{
+        NSURL *urlThumb = [NSURL URLWithString:[NSString stringWithFormat:@"%@", [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"] ]];
+        NSArray *f = [[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"] componentsSeparatedByString:@"/"];
+        NSString *fileName = [f objectAtIndex:f.count-1];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,     NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *getImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+        UIImage *img = [UIImage imageWithContentsOfFile:getImagePath];
+        
+        if ([img isKindOfClass:[UIImage class]]) {
+            cell.mGiftCellUserImageView.image = img;
+        }
+        else {
+            if ([[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_full_image"] length]<=6) {
+                cell.mGiftCellUserImageView.image = [UIImage imageNamed:@"no_photo.jpg"];
+            }
+            else{
+                NSData *imageData = [NSData dataWithContentsOfURL:urlThumb];
                 
                 NSString *fileName = [f objectAtIndex:f.count-1];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // Update the UI
                     
-                    cell.mGiftCellImageView.image = [UIImage imageWithData:imageData];
+                    cell.mGiftCellUserImageView.image = [UIImage imageWithData:imageData];
                     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                     NSString *documentsDirectory = [paths objectAtIndex:0];
                     NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
                     [imageData writeToFile:savedImagePath atomically:NO];
-
                     [cell.mActivityIndicator stopAnimating];
-                    
-                    
                 });
-            });
+            }
         }
     }
-    f = [[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_thumb_image"] componentsSeparatedByString:@"/"];
-    fileName = [f objectAtIndex:f.count-1];
-    getImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-    img = [UIImage imageWithContentsOfFile:getImagePath];
-
-    if ([img isKindOfClass:[UIImage class]]) {
-        cell.mGiftCellUserImageView.image = img;
-    }
-    else {
-        if ([[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"gift_user_thumb_image"] length]<=6) {
-            cell.mGiftCellUserImageView.image = [UIImage imageNamed:@"no_photo.jpg"];
-        }
-        else{
-            NSData *imageData = [NSData dataWithContentsOfURL:urlThumb];
-            
-            NSString *fileName = [f objectAtIndex:f.count-1];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Update the UI
-                
-                cell.mGiftCellUserImageView.image = [UIImage imageWithData:imageData];
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectory = [paths objectAtIndex:0];
-                NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-                [imageData writeToFile:savedImagePath atomically:NO];
-                [cell.mActivityIndicator stopAnimating];
-            });
-        }
-    }
-
     return cell;
      
 }
@@ -198,15 +222,15 @@
 -(void)didMyGiftCard:(NSDictionary *)returnDict isSuccess:(BOOL)isSuccess{
     [_mActivityIndicator stopAnimating];
     if (isSuccess == YES) {
-        NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                        ascending:YES selector:@selector(localizedStandardCompare:)] ;
-        NSArray *sa = [[returnDict valueForKey:@"item"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        NSArray *sa1 = [[returnDict valueForKey:@"others"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        
-        itemGiftCardDetails = [NSMutableArray arrayWithArray:sa];
+//        NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
+//                                                                        ascending:YES selector:@selector(localizedStandardCompare:)] ;
+//        NSArray *sa = [[returnDict valueForKey:@"item"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+//        NSArray *sa1 = [[returnDict valueForKey:@"others"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+//        
+        itemGiftCardDetails = [NSMutableArray arrayWithArray:[returnDict valueForKey:@"item"]];
         flagitemGiftCardDetailsCount = itemGiftCardDetails.count;
-        [itemGiftCardDetails addObjectsFromArray: sa1];
-        otherGiftCardDetails = [NSMutableArray arrayWithArray:sa1];
+        [itemGiftCardDetails addObjectsFromArray: [returnDict valueForKey:@"others"]];
+        otherGiftCardDetails = [NSMutableArray arrayWithArray:[returnDict valueForKey:@"others"]];
         [tableViewGiftCard reloadData];
     }
 }
@@ -235,12 +259,12 @@
     //create the button and assign the image
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImage imageNamed:@"btn_next_arrow_01.png"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"btn_next_arrow_02.png"] forState:UIControlStateHighlighted];
+    //[button setImage:[UIImage imageNamed:@"btn_next_arrow_02.png"] forState:UIControlStateHighlighted];
     button.adjustsImageWhenDisabled = NO;
     
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [button1 setImage:[UIImage imageNamed:@"btn_home_01.png"] forState:UIControlStateNormal];
-    [button1 setImage:[UIImage imageNamed:@"btn_home_02.png"] forState:UIControlStateHighlighted];
+    //[button1 setImage:[UIImage imageNamed:@"btn_home_02.png"] forState:UIControlStateHighlighted];
     button1.adjustsImageWhenDisabled = NO;
     
     //set the frame of the button to the size of the image (see note below)

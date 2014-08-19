@@ -18,6 +18,7 @@
     NSMutableDictionary *paymentDict;
 }
 
+-(void)loadGiftCard;
 @property (strong, nonatomic) NSMutableDictionary *day_item;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *buttons;
 @property (strong, nonatomic) IBOutlet UILabel *valueLabel;

@@ -446,7 +446,7 @@
     [request setHTTPMethod:@"POST"];
     //NSString *postString = [NSString stringWithFormat:@"username=%@&password=%@", @"kkk", @"lll"];
     
-    NSString *postString = [NSString stringWithFormat:@"inputs[name]=%@&inputs[email]=%@&inputs[device_type]=%@&inputs[device_token]=%@&inputs[id]=%@",user.name,user.email,user.deviceType,user.deviceToken,@"0"];
+    NSString *postString = [NSString stringWithFormat:@"inputs[name]=%@&inputs[email]=%@&inputs[device_type]=%@&inputs[device_token]=%@&inputs[id]=%@&inputs[fb_id]=%@",user.name,user.email,user.deviceType,user.deviceToken,@"0",user.fbid];
     
     [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -455,6 +455,29 @@
     
     [connection start];
     
+}
+
+-(void)updateGftCardCount:(NSString *)cardID{
+    connectionFlag = 555;
+    NSString *urlstring =[NSString stringWithFormat:@"%@my_gift_card_details_read",baseUrl];
+    NSURL *aUrl = [NSURL URLWithString:urlstring];
+    
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    
+    [request setHTTPMethod:@"POST"];
+    
+    NSString *postString = [NSString stringWithFormat:@"id=%@",cardID];
+    
+    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSURLConnection *connection= [[NSURLConnection alloc] initWithRequest:request
+                                                                 delegate:self];
+    
+    [connection start];
 }
 
 #pragma mark NSURLConnection Delegate Methods
@@ -484,7 +507,7 @@
    
     NSError *error;
     NSString *respons = [NSString stringWithUTF8String:[_responseData bytes]];
-//    NSLog(@"rsponsedata %@",[NSString stringWithUTF8String:[_responseData bytes]]);
+    NSLog(@"rsponsedata %@",[NSString stringWithUTF8String:[_responseData bytes]]);
     NSJSONSerialization *json = [NSJSONSerialization JSONObjectWithData:_responseData options:NSJSONReadingMutableContainers error:&error];
 //    NSLog(@"%@",json);
     if (!error) {
@@ -503,7 +526,7 @@
        
     }
     
-    if(connectionFlag == 2 || connectionFlag == 14){
+     if(connectionFlag == 2 || connectionFlag == 14){
         
         
         NSString *errorCode = [NSString stringWithFormat:@"%@",[json valueForKey:@"error"]];
@@ -740,6 +763,9 @@
             
             
             if ([errorCode isEqualToString:@"0"]) {
+                [[NSUserDefaults standardUserDefaults] setValue:[json valueForKey:@"upcoming_count"] forKey:@"upcomingEvent"];
+                [[NSUserDefaults standardUserDefaults] setValue:[json valueForKey:@"unread_my_gift_card_count"] forKey:@"unreadGiftCard"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.delegate didTotalEvent:(NSArray *)[json valueForKey:@"item"] isSuccess:YES];
             } else {
                 [self.delegate didTotalEvent:(NSArray *)[json valueForKey:@"item"] isSuccess:NO];
@@ -771,6 +797,9 @@
                 [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"accountDetail"];
             }
             [self.delegate didAccountLoad:@"Yes"];
+        }
+        if (connectionFlag == 555) {
+            
         }
 
         

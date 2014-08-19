@@ -32,18 +32,10 @@
     [[NSUserDefaults standardUserDefaults] setValue:@"No" forKey:@"GivitLater"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	// Do any additional setup after loading the view.
+    [self.view setUserInteractionEnabled:NO];
 }
 -(void)viewWillAppear:(BOOL)animated{
     
-    GIM_AppDelegate *appD = (GIM_AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if (appD.isGetPush == YES) {
-        appD.isGetPush = NO;
-        tabindex = 14;
-        [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%d",tabindex] forKey:@"TabIndex"];
-        [[NSUserDefaults standardUserDefaults] setValue:@"myGiftCard" forKey:@"myGift"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self performSegueWithIdentifier:@"SegueToTabBar" sender:self];
-    }
 //    else{
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     self.navigationItem.hidesBackButton = YES;
@@ -69,6 +61,11 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.view setUserInteractionEnabled:YES];
+
+}
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
@@ -142,8 +139,11 @@
 
 - (IBAction)didTapLogout:(id)sender {
     [[NSUserDefaults standardUserDefaults] setValue:@"no" forKey:@"remember"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"emailID"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [FBSession.activeSession closeAndClearTokenInformation];
+    [[FbMethods sharedManager] setDelegate:nil];
+    [[FbMethods sharedManager] didFacebookLogout];
     [[LinkedINAPIFunction sharedManager] didLinkedINLogout];
     [[YahooHandler SharedInstance]LogoutFromYahoo:self didFinishSelector:@selector(LogoutDidFinish:) didFailSelector:nil];
     [self.navigationController popViewControllerAnimated:YES];
@@ -176,9 +176,10 @@
 -(void)didTotalEvent:(NSArray *)msg isSuccess:(BOOL)isSuccess{
     NSMutableArray *fbEvent = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"FBEvents"]];
     NSMutableArray *gmailEvent = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"GmailEvents"]];
+    self.countMygiftCardLabel.text = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"unreadGiftCard"]];
     if(isSuccess){
         
-        _counteventLabel.text = [NSString stringWithFormat:@"%d",[msg count]+[fbEvent count]+[gmailEvent count]];
+        _counteventLabel.text = [NSString stringWithFormat:@"%d",[[[NSUserDefaults standardUserDefaults] valueForKey:@"upcomingEvent ≈Ω"]integerValue]+[fbEvent count]+[gmailEvent count]];
     } else {
         _counteventLabel.text = [NSString stringWithFormat:@"%d",[fbEvent count]+[gmailEvent count]];
     }

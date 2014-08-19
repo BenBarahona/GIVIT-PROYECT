@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import "FbMethods.h"
 #import <AddressBook/AddressBook.h>
 #import "GIM_AppDelegate.h"
 #import "CustomButtonTabController.h"
@@ -21,7 +21,7 @@
 
 @end
 
-@interface GIM_SocialSynViewController : UIViewController<LinkedINAPIFunctionDelegates>{
+@interface GIM_SocialSynViewController : UIViewController<LinkedINAPIFunctionDelegates,FbMethodsDelegate>{
     NSString *syncType;
 }
 @property (nonatomic, readwrite, retain) YOSSession *sessionYahoo;

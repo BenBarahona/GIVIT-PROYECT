@@ -25,7 +25,6 @@
 -(void)updateUploadeImageOrVideo:(UIImage *)image;
 -(void)updateUploadeVideo:(NSString *)video;
 -(void)barCode:(NSString *)barcode;
-
 @end
 
 @interface CustomButtonTabController : UIViewController{
@@ -44,6 +43,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *mSecondRightBarButton;
 @property (weak, nonatomic) IBOutlet UIView *mNavigationView;
 @property (weak, nonatomic) IBOutlet UIView *mTabBarButtonView;
+@property (weak, nonatomic) IBOutlet UIButton *godButton;
+@property (weak, nonatomic) IBOutlet UIButton *buyButton;
+@property (weak, nonatomic) IBOutlet UIButton *myGiftButton;
+@property (weak, nonatomic) IBOutlet UIButton *eventButton;
+@property (weak, nonatomic) IBOutlet UIButton *messageButton;
+@property (weak, nonatomic) IBOutlet UIButton *accountButton;
 
 - (IBAction)didTapGiftOftheDay:(id)sender;
 - (IBAction)didTapBuyGiftCard:(id)sender;
@@ -58,6 +63,7 @@
 - (void)setHeaderTitleLabelText:(id)navigationController;
 - (void)setHiddenOnOffExtraButton:(BOOL)hidden;
 - (void)didOpenCameraforBarcode : (BOOL)isBarcode;
+- (void)didOpenMassage : (NSString *)viewControllerName;
 - (void)setCustomNavigationViewFrame:(CGRect)frame;
 - (BOOL) startCameraControllerFromViewController: (UIViewController*) controller
                                    usingDelegate: (id <UIImagePickerControllerDelegate,

@@ -66,7 +66,7 @@
 -(void) events_user: (GIM_UserModel *)user;
 -(void) social_Login: (GIM_UserModel *)user;
 -(void) myAcc:(GIM_UserModel *)user;
-
+-(void) updateGftCardCount:(NSString *)cardID;
 
 
 

@@ -39,7 +39,9 @@
     if (buttonIndex == 1) {
         appD.isGetPushPayment =NO;
         NSLog(@"viewcontrollers %@",[(UINavigationController *)appD.window.rootViewController viewControllers]);
-        [(UINavigationController *)appD.window.rootViewController popToViewController:[[(UINavigationController *)appD.window.rootViewController viewControllers] objectAtIndex:1] animated:YES];
+        CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[appD.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[appD.window rootViewController] viewControllers] count]-1];
+        //    tabHome.delegate = (id)self;
+        [tabHome didOpenMassage:@"MESSAGE"];
     }
     else{
         appD.isGetPush = NO;

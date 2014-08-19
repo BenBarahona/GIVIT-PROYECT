@@ -21,6 +21,8 @@
 @interface GIM_GiveGiftCard_SelectContactViewController : UIViewController<UIAlertViewDelegate,socialLoginDelegate,newContactAddProtocol,UITableViewDataSource,UITableViewDelegate>{
     NSMutableArray *contactDetail,*selectArray,*totalContact;
     NSMutableArray *demoArray;
+    BOOL isChange;
+    NSString *contactType;
 }
 @property BOOL isHideContinue;
 @property (nonatomic,strong) UILocalizedIndexedCollation  *collation;
@@ -33,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *mGmailButton;
 @property (weak, nonatomic) IBOutlet UIButton *mYahooButton;
 @property (weak, nonatomic) IBOutlet UIButton *mContinueButton;
+@property (weak, nonatomic) IBOutlet UIButton *mLinkedInButton;
 
 
 

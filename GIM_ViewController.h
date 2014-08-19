@@ -11,12 +11,13 @@
 #import "GIM_UserController.h"
 #import "GIM_AppDelegate.h"
 #import "GoogleOAuth.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import "FbMethods.h"
 #import "YOSSession.h"
 #import "YOSRequestClient.h"
-
-@interface GIM_ViewController : UIViewController <GIM_UserServiceDelegate, UITextFieldDelegate,GoogleOAuthDelegate,YOSRequestDelegate>{
+#import "LinkedINAPIFunction.h"
+@interface GIM_ViewController : UIViewController <GIM_UserServiceDelegate, UITextFieldDelegate,GoogleOAuthDelegate,YOSRequestDelegate,LinkedINAPIFunctionDelegates,FbMethodsDelegate>{
     GIM_AppDelegate*appDelegate;
+    BOOL isLinkedInLoginSuccess;
 }
 
 @property (nonatomic, strong) GoogleOAuth *googleOAuth;
@@ -35,6 +36,7 @@
 - (IBAction)didTapGmailSignIn:(id)sender;
 - (IBAction)didTapToCancelGmailSign:(id)sender;
 - (IBAction)didTapToFBLogin:(id)sender;
+- (IBAction)didTapToLinkedInLogin:(id)sender;
 - (IBAction)loginAction:(id)sender;
 - (IBAction)didTapNewRegistration:(id)sender;
 -(NSString *) validateLogin;

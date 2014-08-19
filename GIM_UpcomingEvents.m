@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
     totalEvent = [[NSMutableArray alloc] init];
+    showingEvent = [[NSMutableArray alloc] init];
+    checkArray = [[NSMutableArray alloc] init];
 	// Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -87,6 +89,13 @@
     cell.eventTimeLabel.text = selectDate;
     cell.eventDescriptionTextView.text = [[totalEvent objectAtIndex:indexPath.row]valueForKey:@"description"];
     cell.eventDescriptionTextView.tag = indexPath.row;
+    [cell.mCheckButton setTag:indexPath.row];
+    if ([[checkArray objectAtIndex:indexPath.row]isEqualToString:@"Yes"]) {
+        [cell.mCheckButton setImage:[UIImage imageNamed:@"chk_box_02.png"] forState:UIControlStateNormal];
+    }
+    else{
+        [cell.mCheckButton setImage:[UIImage imageNamed:@"chk_box_01.png"] forState:UIControlStateNormal];
+    }
     return cell;
 }
 
@@ -102,7 +111,7 @@
 
 
 -(void)didTotalEvent:(NSArray *)msg isSuccess:(BOOL)isSuccess{
-    [totalEvent removeAllObjects];
+    [showingEvent removeAllObjects];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSDate *dateFromString = [[NSDate alloc] init];
@@ -110,27 +119,181 @@
         for (int i = 0; i < msg.count; i++) {
             dateFromString = [dateFormatter dateFromString:[[msg objectAtIndex:i] objectForKey:@"date"]];
             if ([dateFromString timeIntervalSinceDate:[NSDate date]] > 0){
-                [totalEvent addObject:[msg objectAtIndex:i]];
+                [showingEvent addObject:[msg objectAtIndex:i]];
             }
         }
 
     }
+    [totalEvent removeAllObjects];
+    totalEvent = [NSMutableArray arrayWithArray:(NSArray *)showingEvent];
+    [self.appEventButton setSelected:YES];
+    [self.fEventButton setSelected:NO];
+    [self.gEventButton setSelected:NO];
+    isAppevent = YES;
+    isFBevent = NO;
+    isGmailEvent = NO;
+    [self createCheckArray];
+    [self hiddenDeleteView];
+}
+
+- (IBAction)didTapCheckButton:(id)sender {
+    int tag = [(UIButton *)sender tag];
+    if ([[checkArray objectAtIndex:tag]isEqualToString:@"Yes"]) {
+        [checkArray replaceObjectAtIndex:tag withObject:@"No"];
+    }
+    else{
+        [checkArray replaceObjectAtIndex:tag withObject:@"Yes"];
+    }
+    [self.mUpcomingTableView reloadData];
+}
+
+- (IBAction)didTapAppEvent:(id)sender {
+    isAppevent = YES;
+    isFBevent = NO;
+    isGmailEvent = NO;
+    [self.appEventButton setSelected:YES];
+    [self.fEventButton setSelected:NO];
+    [self.gEventButton setSelected:NO];
+    totalEvent = [NSMutableArray arrayWithArray:(NSArray *)showingEvent];
+    [self createCheckArray];
+    [self hiddenDeleteView];
+}
+
+- (IBAction)didTapFbEvent:(id)sender {
+    isAppevent = NO;
+    isFBevent = YES;
+    isGmailEvent = NO;
+    [self.appEventButton setSelected:NO];
+    [self.fEventButton setSelected:YES];
+    [self.gEventButton setSelected:NO];
+    [totalEvent removeAllObjects];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *dateFromString = [[NSDate alloc] init];
     NSMutableArray *fbEvent = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"FBEvents"]];
     for (int i = 0; i < fbEvent.count; i++) {
         dateFromString = [dateFormatter dateFromString:[[fbEvent objectAtIndex:i] objectForKey:@"date"]];
-        if ([dateFromString timeIntervalSinceDate:[NSDate date]] > 0){
+        if ([dateFromString timeIntervalSinceDate:[NSDate date]] >= 0){
             [totalEvent addObject:[fbEvent objectAtIndex:i]];
         }
     }
-    fbEvent = nil;
-    fbEvent = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"GmailEvents"]];
+    [self createCheckArray];
+    [self hiddenDeleteView];
+}
+
+- (IBAction)didTapGmailEvent:(id)sender {
+    isAppevent = NO;
+    isFBevent = NO;
+    isGmailEvent = YES;
+    [self.appEventButton setSelected:NO];
+    [self.fEventButton setSelected:NO];
+    [self.gEventButton setSelected:YES];
+    [totalEvent removeAllObjects];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *dateFromString = [[NSDate alloc] init];
+    NSMutableArray *    fbEvent = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"GmailEvents"]];
     for (int i = 0; i < fbEvent.count; i++) {
         dateFromString = [dateFormatter dateFromString:[[fbEvent objectAtIndex:i] objectForKey:@"date"]];
         if ([dateFromString timeIntervalSinceDate:[NSDate date]] > 0){
             [totalEvent addObject:[fbEvent objectAtIndex:i]];
         }
     }
-    [_mUpcomingTableView reloadData];
+    [self createCheckArray];
+    [self hiddenDeleteView];
 }
 
+- (IBAction)didTapSelectAll:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if (btn.selected == NO) {
+        btn.selected = YES;
+        [self.mSelectallCheckBoxImageView setImage:[UIImage imageNamed:@"chk_box_02.png"]];
+        [checkArray removeAllObjects];
+        for (int i = 0; i<totalEvent.count; i++) {
+            [checkArray addObject:@"Yes"];
+        }
+    }
+    else{
+        btn.selected = NO;
+        [self.mSelectallCheckBoxImageView setImage:[UIImage imageNamed:@"chk_box_01.png"]];
+        [checkArray removeAllObjects];
+        for (int i = 0; i<totalEvent.count; i++) {
+            [checkArray addObject:@"No"];
+        }
+    }
+    [self.mUpcomingTableView reloadData];
+}
+
+- (IBAction)didTapDeleteButton:(id)sender {
+    if (isAppevent == YES) {
+        for (int i = 0; i<totalEvent.count;) {
+            if ([[checkArray objectAtIndex:i]isEqualToString:@"Yes"]) {
+                NSString *URLString = [NSString stringWithFormat:@"http://appproto.com/demos/giftitmobile/get_api/get_api/delete_event?=&eventid=%@",[[totalEvent objectAtIndex:i] valueForKey:@"id"]];
+                NSURL *requestURL = [NSURL URLWithString:URLString];
+                [showingEvent removeObjectAtIndex:i];
+                [totalEvent removeObjectAtIndex:i];
+                [checkArray removeObjectAtIndex:i];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSData *responseData;
+                    responseData = [NSData dataWithContentsOfURL:requestURL];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // Update the UI
+                        NSLog(@"\n\n<<<<<<<<<<<<<<<<<<<<Appdelegate : %@\n\n",[NSString stringWithUTF8String:[responseData bytes]]);
+                    });
+                });
+            }
+            else{
+                i++;
+            }
+        }
+        
+    }
+    else if (isFBevent == YES) {
+        for (int i = 0; i<totalEvent.count;) {
+            if ([[checkArray objectAtIndex:i]isEqualToString:@"Yes"]) {
+                [totalEvent removeObjectAtIndex:i];
+                [checkArray removeObjectAtIndex:i];
+                [[NSUserDefaults standardUserDefaults] setObject:totalEvent forKey:@"FBEvents"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            else{
+                i++;
+            }
+        }
+    }
+    else if (isGmailEvent == YES) {
+        for (int i = 0; i<totalEvent.count;) {
+            if ([[checkArray objectAtIndex:i]isEqualToString:@"Yes"]) {
+                [totalEvent removeObjectAtIndex:i];
+                [checkArray removeObjectAtIndex:i];
+                [[NSUserDefaults standardUserDefaults] setObject:totalEvent forKey:@"GmailEvents"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            else{
+                i++;
+            }
+        }
+    }
+    [self.mUpcomingTableView reloadData];
+    [self hiddenDeleteView];
+}
+
+-(void)hiddenDeleteView{
+    if (totalEvent.count == 0) {
+        [self.mDeleteView setHidden:YES];
+        [self.mDisplayLabel setHidden:NO];
+    }
+    else{
+        [self.mDeleteView setHidden:NO];
+        [self.mDisplayLabel setHidden:YES];
+    }
+}
+
+-(void)createCheckArray{
+    [checkArray removeAllObjects];
+    for (int i = 0; i<totalEvent.count; i++) {
+        [checkArray addObject:@"No"];
+    }
+    [self.mUpcomingTableView reloadData];
+}
 @end

@@ -19,6 +19,7 @@
 - (IBAction)didTapToUpload:(id)sender;
 - (IBAction)didTapCancel:(id)sender;
 - (IBAction)didTapGivitLater:(id)sender;
+- (IBAction)didTapInformationButton:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *lbl;
 
 @property (weak, nonatomic) IBOutlet UITextView *messageTextField;

@@ -38,5 +38,5 @@
 - (IBAction)didTapToOpenDatePicker:(id)sender;
 - (IBAction)didTapAddEvent:(id)sender;
 - (IBAction)didTapClose:(id)sender;
--(void)gotoAddNewContact;
+-(void)gotoAddNewEvent;
 @end

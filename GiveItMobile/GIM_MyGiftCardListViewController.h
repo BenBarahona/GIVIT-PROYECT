@@ -23,7 +23,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableViewGiftCard;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *mActivityIndicator;
 
-
+-(void)loadGiftCard;
 
 
 

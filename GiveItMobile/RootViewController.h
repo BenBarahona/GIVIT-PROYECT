@@ -35,6 +35,7 @@
     int flag,completeFlag;
   GDataServiceGoogleCalendar *googleCalendarService;
   EditingViewController *editingViewController;
+    NSMutableArray * googleEvent;
 }
 
 // We declare accessor for the googleCalendarService because we need to access it from the EditingViewController class.

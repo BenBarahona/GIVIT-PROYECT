@@ -33,12 +33,11 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToSingle:) name:@"pushToSingle" object:nil];
 }
 
 -(void)pushToSingle:(NSNotification *)notis{
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,7 +146,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [self performSegueWithIdentifier:@"didRegister" sender:self];
+//    [self performSegueWithIdentifier:@"didRegister" sender:self];
 }
 
 

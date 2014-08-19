@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GIM_UserModel.h"
 #import "GIM_UserController.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import "FbMethods.h"
 #import "GIM_GiftOfDayViewController.h"
 #import "GIM_BuyGiftCardViewController.h"
 #import "GIM_MyGiftCardListViewController.h"
@@ -28,6 +28,7 @@
 - (IBAction)didTapLogout:(id)sender;
 - (IBAction)didTapToConnectMyEvents:(id)sender;
 - (IBAction)didTapToMyEvents:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *countMygiftCardLabel;
 @property (weak, nonatomic) IBOutlet UILabel *counteventLabel;
 @property (weak, nonatomic) IBOutlet UILabel *countMessageLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *mScrollView;

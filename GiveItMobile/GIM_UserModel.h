@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSString *doa;
 
 @property (nonatomic, strong) NSString *userid;
+@property (nonatomic, strong) NSString *fbid;
 
 
 @property (nonatomic, strong) NSString *couponCode;

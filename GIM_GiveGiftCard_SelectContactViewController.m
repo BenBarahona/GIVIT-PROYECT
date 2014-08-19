@@ -36,7 +36,7 @@
     }
     [self sectionArray];
     [_sendGiftTableView reloadData];
-
+    isChange = NO;
     [[NSNotificationCenter defaultCenter] addObserver:(id)self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     if (totalContact.count==0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your Contact information" message:[NSString stringWithFormat:@"You have total %d contacts. Do you want to sync?",totalContact.count] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
@@ -149,10 +149,18 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     cell.sendGiftCellImageView.image = nil;
-   
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]]];
-    
-    NSString *fileName = [NSString stringWithFormat:@"fb%@.png",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]];
+    NSURL *url;
+    NSString *fileName;
+    if ([[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"picture"] length]>0){
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"picture"]]];
+        
+        fileName = [NSString stringWithFormat:@"%@.png",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"username"]];
+    }
+    else if ([[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"] length]>0) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]]];
+        
+        fileName = [NSString stringWithFormat:@"fb%@.png",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]];
+    }
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,     NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *getImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
@@ -162,28 +170,47 @@
         [cell.mActivityIndicator stopAnimating];
     }
     else {
-        if ([[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"] length]<=6) {
+        NSLog(@"%@",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]);
+        int count;
+        if ([[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"picture"] length]>0){
+            count = [[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"picture"] length];
+        }
+        else{
+            count = [[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"] length];
+        }
+        if (count<=6) {
             cell.sendGiftCellImageView.image = [UIImage imageNamed:@"no_photo.jpg"];
             [cell.mActivityIndicator stopAnimating];
         }
         else{
             [cell.mActivityIndicator startAnimating];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                NSData *imageData = [NSData dataWithContentsOfURL:url];
-                
-                NSString *fileName = [NSString stringWithFormat:@"fb%@.png",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // Update the UI
-                    cell.sendGiftCellImageView.image = [UIImage imageWithData:imageData];
-                    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                    NSString *documentsDirectory = [paths objectAtIndex:0];
-                    NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-                    [imageData writeToFile:savedImagePath atomically:NO];
+                if ([[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] count] > indexPath.row) {
+                    NSLog(@"in loop");
+                    NSData *imageData = [NSData dataWithContentsOfURL:url];
+                    NSString *fileName;
+                    if ([[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] count] > indexPath.row &&[[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"picture"] length]>0){
+                        fileName = [NSString stringWithFormat:@"%@.png",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"username"]];
+                    }
+                    else if ([[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] count] > indexPath.row && [[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"] length]>0) {
+                        fileName = [NSString stringWithFormat:@"fb%@.png",[[[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row] valueForKey:@"id"]];
+                    }
                     
-                    [cell.mActivityIndicator stopAnimating];
-                    
-                    
-                });
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // Update the UI
+                        if (fileName == nil || fileName == (id)[NSNull null] || [[NSString stringWithFormat:@"%@",fileName] length] == 0 || [[[NSString stringWithFormat:@"%@",fileName] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+                            
+                        }
+                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                        NSString *documentsDirectory = [paths objectAtIndex:0];
+                        NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+                        [imageData writeToFile:savedImagePath atomically:NO];
+                        cell.sendGiftCellImageView.image = [UIImage imageWithData:imageData];
+                        [cell.mActivityIndicator stopAnimating];
+                        
+                    });
+
+                }
             });
         }
     }
@@ -214,6 +241,7 @@
         [selectArray replaceObjectAtIndex:indexPath.section withObject:arr];
     }
     [_sendGiftTableView reloadData];
+    isChange = NO;
 }
 
 #pragma mark GIM_UserServiceDelegate
@@ -222,7 +250,7 @@
 
 
 
--(void)gotoAddNewContact{
+-(void)gotoAddNewEvent{
 }
 
 #pragma mark IBAction Methods
@@ -249,42 +277,42 @@
     }
     else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"Please select at least one contact to send gift card" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        alert.tag = 10;
         [alert show];
     }
 }
 
 
 - (IBAction)didTapToSocialSync:(id)sender {
-    NSString *ContactType;
+    isChange = YES;
     [_mContactsButton setImage:[UIImage imageNamed:@"btn_user_01.png"] forState:UIControlStateNormal];
     [_mFaceBookButton setImage:[UIImage imageNamed:@"btn_fb_01.png"] forState:UIControlStateNormal];
     [_mGmailButton setImage:[UIImage imageNamed:@"btn_mail_01.png"] forState:UIControlStateNormal];
-    [_mFaceBookButton setImage:[UIImage imageNamed:@"btn_fb_01.png"] forState:UIControlStateNormal];
+    [_mLinkedInButton setImage:[UIImage imageNamed:@"btn_in_01.png"] forState:UIControlStateNormal];
     [_mYahooButton setImage:[UIImage imageNamed:@"btn_yahoo_0001.png"] forState:UIControlStateNormal];
     switch ([(UIButton *)sender tag]) {
         case 1:{
             [_mContactsButton setImage:[UIImage imageNamed:@"btn_user_02.png"] forState:UIControlStateNormal];
-            ContactType = @"LocalContacts";
+            contactType = @"LocalContacts";
         }
             break;
         case 2:{
-            ContactType = @"FBContacts";
+            contactType = @"FBContacts";
             [_mFaceBookButton setImage:[UIImage imageNamed:@"btn_fb_02.png"] forState:UIControlStateNormal];
         }
             break;
         case 3:{
-//            ContactType = @"GmailContacts";
-//            [_mAddContactButton setHidden:YES];
-//            [_mGmailButton setImage:[UIImage imageNamed:@"btn_mail_02.png"] forState:UIControlStateNormal];
+            contactType = @"LinkedInContacts";
+            [_mLinkedInButton setImage:[UIImage imageNamed:@"btn_in_02.png"] forState:UIControlStateNormal];
         }
             break;
         case 4:{
-            ContactType = @"GmailContacts";
+            contactType = @"GmailContacts";
             [_mGmailButton setImage:[UIImage imageNamed:@"btn_mail_02.png"] forState:UIControlStateNormal];
         }
             break;
         case 5:{
-            ContactType = @"YahooContacts";
+            contactType = @"YahooContacts";
             [_mYahooButton setImage:[UIImage imageNamed:@"btn_yahoo_0002.png"] forState:UIControlStateNormal];
         }
             break;
@@ -292,16 +320,18 @@
         default:
             break;
     }
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:ContactType] != nil) {
-        contactDetail = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:ContactType]];
-        totalContact = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:ContactType]];
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:contactType] != nil) {
+        contactDetail = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:contactType]];
+        totalContact = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:contactType]];
+        [self sectionArray];
+        [_sendGiftTableView reloadData];
+        isChange = NO;
     }
     else{
-        contactDetail = nil;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your Contact information" message:[NSString stringWithFormat:@"You have total 0 contacts. Do you want to sync?"] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+        [alert show];
     }
-    [self sectionArray];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your Contact information" message:[NSString stringWithFormat:@"You have total %d contacts. Do you want to sync?",totalContact.count] delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-    [alert show];
+
 }
 
 - (IBAction)didTapToAddNewContact:(id)sender {
@@ -311,10 +341,23 @@
 
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1) {
+    if (buttonIndex == 1 && alertView.tag != 10) {
         [self performSegueWithIdentifier:@"SocialLogin" sender:self];
     }
+    if (contactType == nil || contactType == (id)[NSNull null] || [[NSString stringWithFormat:@"%@",contactType] length] == 0 || [[[NSString stringWithFormat:@"%@",contactType] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+    }
+    else{
+        if ([[NSUserDefaults standardUserDefaults] valueForKey:contactType] != nil) {
+            contactDetail = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:contactType]];
+            totalContact = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:contactType]];
+        }
+        else{
+            contactDetail = nil;
+        }
+        [self sectionArray];
+    }
     [_sendGiftTableView reloadData];
+    isChange = NO;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -346,7 +389,7 @@
         [_mContactsButton setImage:[UIImage imageNamed:@"btn_user_01.png"] forState:UIControlStateNormal];
         [_mFaceBookButton setImage:[UIImage imageNamed:@"btn_fb_01.png"] forState:UIControlStateNormal];
         [_mGmailButton setImage:[UIImage imageNamed:@"btn_mail_01.png"] forState:UIControlStateNormal];
-        [_mFaceBookButton setImage:[UIImage imageNamed:@"btn_fb_01.png"] forState:UIControlStateNormal];
+        [_mLinkedInButton setImage:[UIImage imageNamed:@"btn_in_01.png"] forState:UIControlStateNormal];
         [_mYahooButton setImage:[UIImage imageNamed:@"btn_yahoo_0001.png"] forState:UIControlStateNormal];
     }
     if ([ContactType isEqualToString:@"LocalContacts"]) {
@@ -361,7 +404,11 @@
     else if ([ContactType isEqualToString:@"YahooContacts"]){
         [_mYahooButton setImage:[UIImage imageNamed:@"btn_yahoo_0002.png"] forState:UIControlStateNormal];
     }
+    else if ([ContactType isEqualToString:@"LinkedInContacts"]){
+        [_mYahooButton setImage:[UIImage imageNamed:@"btn_in_02.png"] forState:UIControlStateNormal];
+    }
     [_sendGiftTableView reloadData];
+    isChange = NO;
 }
 
 #pragma mark NewcontactAdd Delegate
@@ -416,7 +463,7 @@
     [self sectionArray];
     
     [_sendGiftTableView reloadData];
-
+    isChange = NO;
 }
 
 #pragma mark Textfield Delegate
@@ -435,6 +482,8 @@
 }
 
 -(void)textChanged:(id)sender{
+    isChange = YES;
+
     UITextField *textField = [(NSNotification *)sender object];
     [contactDetail removeAllObjects];
     contactDetail = nil;
@@ -450,6 +499,7 @@
     }
     [self sectionArray];
     [_sendGiftTableView reloadData];
+    isChange = NO;
 }
 
 #pragma mark Method to divide an array with section
@@ -508,7 +558,7 @@
         [totalName removeAllObjects];
         
     }
-    if (contactDetail.count>0) {
+//    if (contactDetail.count>0) {
         for (int j = 0; j<contactDetail.count; j++) {
             [totalName addObject:[[contactDetail objectAtIndex:j] copy]];
             [total addObject:@"no"];
@@ -524,7 +574,7 @@
         [dict removeAllObjects];
         [total removeAllObjects];
         [totalName removeAllObjects];
-    }
+//    }
     contactDetail = finalArray;
 }
 @end

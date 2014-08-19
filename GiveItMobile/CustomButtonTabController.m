@@ -8,9 +8,12 @@
 
 #import "CustomButtonTabController.h"
 #import "GIM_Eventlist.h"
+#import "GIM_Events.h"
 #import "GIM_UpcomingEvents.h"
 #import "GIM_Thanks.h"
 #import "GIM_MyAccountViewController.h"
+#import "GIM_GiftOfDayViewController.h"
+#import "GIM_BuyGiftCardViewController.h"
 @interface CustomButtonTabController ()
 
 @end
@@ -86,6 +89,9 @@
     _selectedIndex = [sender tag];
     [self changeButtonImage];
     _mHeaderTitleLabel.text = giftOfTheDayNavigation.title;
+    if (giftOfTheDayNavigation.viewControllers.count == 1) {
+        [(GIM_GiftOfDayViewController *)[giftOfTheDayNavigation.viewControllers objectAtIndex:giftOfTheDayNavigation.viewControllers.count-1] loadGiftCard];
+    }
     [_mNavigationView bringSubviewToFront:giftOfTheDayNavigation.view];
 }
 
@@ -93,6 +99,9 @@
     _selectedIndex = [sender tag];
     [self changeButtonImage];
     _mHeaderTitleLabel.text = buyGiftNavigation.title;
+    if (buyGiftNavigation.viewControllers.count == 1) {
+        [(GIM_BuyGiftCardViewController *)[buyGiftNavigation.viewControllers objectAtIndex:buyGiftNavigation.viewControllers.count-1] loadRetailer];
+    }
     [_mNavigationView bringSubviewToFront:buyGiftNavigation.view];
 }
 
@@ -185,7 +194,10 @@
 
 - (IBAction)didTapExtraRightButton:(id)sender {
     if (_selectedIndex == 13 && [(GIM_Eventlist *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_Eventlist class]]) {
-        [(GIM_Eventlist *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] gotoAddNewContact];
+        [(GIM_Eventlist *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] gotoAddNewEvent];
+    }
+    else if (_selectedIndex == 13 && [(GIM_Events *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_Events class]]) {
+        [(GIM_Events *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] gotoAddNewEvent];
     }
     else if (_selectedIndex == 13 && [(GIM_UpcomingEvents *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_UpcomingEvents class]]) {
         [[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] performSegueWithIdentifier:@"segueCalander" sender:[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1]];
@@ -208,6 +220,11 @@
     }
     [(UIButton *)[_mTabBarButtonView viewWithTag:_selectedIndex] setSelected:YES];
     if (_selectedIndex == 13 && [(GIM_Eventlist *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_Eventlist class]]) {
+        [_mSecondRightBarButton setHidden:NO];
+        [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_01.png"] forState:UIControlStateNormal];
+        [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_02.png"] forState:UIControlStateHighlighted];
+    }
+    else if (_selectedIndex == 13 && [(GIM_Events *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_Events class]]) {
         [_mSecondRightBarButton setHidden:NO];
         [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_01.png"] forState:UIControlStateNormal];
         [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_02.png"] forState:UIControlStateHighlighted];
@@ -264,6 +281,11 @@
         [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_01.png"] forState:UIControlStateNormal];
         [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_02.png"] forState:UIControlStateHighlighted];
     }
+    else if (_selectedIndex == 13 && [(GIM_Events *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_Events class]]) {
+        [_mSecondRightBarButton setHidden:NO];
+        [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_01.png"] forState:UIControlStateNormal];
+        [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_event_02.png"] forState:UIControlStateHighlighted];
+    }
     else if (_selectedIndex == 13 && [(GIM_UpcomingEvents *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_UpcomingEvents class]]) {
         [_mSecondRightBarButton setHidden:NO];
         [_mSecondRightBarButton setImage:[UIImage imageNamed:@"btn_date_01.png"] forState:UIControlStateNormal];
@@ -304,6 +326,32 @@
                                                         otherButtonTitles:@"My Album",@"Video", @"Camera", nil];
         actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
         [actionSheet showInView:self.view];
+    }
+}
+
+-(void)didOpenMassage:(NSString *)viewControllerName{
+    NSLog(@"view \n\n\n %@",viewControllerName);
+    if ([viewControllerName isEqualToString:@"MESSAGE"]) {
+        [messageNavigation popToRootViewControllerAnimated:NO];
+        if ([[messageNavigation viewControllers] count]>0) {
+            [(GIM_MyMessage *)[[messageNavigation viewControllers] objectAtIndex:0] loadMessage];
+        }
+        [self didTapMessages:self.messageButton];
+    }
+    else if ([viewControllerName isEqualToString:@"GIFTCARD_OF_THE_DAY"]){
+        [giftOfTheDayNavigation popToRootViewControllerAnimated:NO];
+        [self didTapGiftOftheDay:self.godButton];
+    }
+    else if ([viewControllerName isEqualToString:@"SEND_GIFT_CARD"]){
+        [myGiftNavigation popToRootViewControllerAnimated:NO];
+        if ([[myGiftNavigation viewControllers] count]>0) {
+            [(GIM_MyGiftCardListViewController *)[[myGiftNavigation viewControllers] objectAtIndex:0] loadGiftCard];
+        }
+        [self didTapMyGiftCard:self.myGiftButton];
+    }
+    else if ([viewControllerName isEqualToString:@"PROMOTION"]){
+        [buyGiftNavigation popToRootViewControllerAnimated:NO];
+        [self didTapBuyGiftCard:self.buyButton];
     }
 }
 
@@ -370,17 +418,17 @@
         case 1:
         {
             UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
-            NSData *imageData = [[NSData alloc] initWithData:UIImageJPEGRepresentation((chosenImage), 0.5)];
+            NSData *imageData = [[NSData alloc] initWithData:UIImageJPEGRepresentation((chosenImage), 0.3)];
             
             float imageSize = imageData.length/(1024);
             imageData = Nil;
-            if (imageSize<=1024.0f) {
+            if (imageSize<=500.0f) {
                 if (_delegate) {
                     [_delegate updateUploadeImageOrVideo:chosenImage];
                 }
             }
             else{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"File Size limit exceeds !\nImage Size upto 1 MB allowd"  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"Image size limit exceeds !\nUpto 500 KB allowed."  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil, nil];
                 [alert show];
             }
             chosenImage = Nil;
@@ -448,13 +496,13 @@
     }else{
         NSData *data = [[NSData alloc] initWithContentsOfFile:videoPath];
         float videoSize = data.length/(1024);
-        if (videoSize<=1024*5) {
+        if (videoSize<=1024) {
             if (_delegate) {
                 [_delegate updateUploadeVideo:videoPath];
             }
         }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"File Size limit exceeds !\nVideo Size upto 5 MB allowd"  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"Video size limit exceeds !\nUpto 1 MB allowed."  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil, nil];
             [alert show];
         }
     }

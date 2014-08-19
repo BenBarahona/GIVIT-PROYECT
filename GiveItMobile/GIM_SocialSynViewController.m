@@ -32,7 +32,6 @@
     _mGmailLoginView.hidden = YES;
     [self.navigationController setNavigationBarHidden:YES];
     [self setValue:[UIFont fontWithName:@"Droid Sans" size:16] forKeyPath:@"button.font"];
-    [FBSession.activeSession closeAndClearTokenInformation];
 	// Do any additional setup after loading the view.
 }
 
@@ -62,8 +61,8 @@
 - (IBAction)btnContinue:(id)sender {
     if (_delegate) {
         [_delegate didFinishSync:syncType];
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    [self.navigationController popViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:^{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"pushToSingle" object:nil userInfo:nil];
     }];
@@ -75,25 +74,38 @@
 
 - (IBAction)didTapToFacebookLoggin:(id)sender {
     [self.view setUserInteractionEnabled:NO];
-    if (FBSession.activeSession.state == FBSessionStateOpen
-        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
-        
-        // Close the session and remove the access token from the cache
-        // The session state handler (in the app delegate) will be called automatically
-//        [FBSession.activeSession closeAndClearTokenInformation];
-        [self saveFBFriendList];
-        // If the session state is not any of the two "open" states when the button is clicked
-    }
-    else {
-        // Open a session showing the user the login UI
-        // You must ALWAYS ask for basic_info permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
-                                           allowLoginUI:YES
-                                      completionHandler:
-         ^(FBSession *session, FBSessionState state, NSError *error) {
-             
-             [self sessionStateChanged:session state:state error:error];
-         }];
+//    if (FBSession.activeSession.state == FBSessionStateOpen
+//        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+//        
+//        // Close the session and remove the access token from the cache
+//        // The session state handler (in the app delegate) will be called automatically
+////        [FBSession.activeSession closeAndClearTokenInformation];
+//        [self saveFBFriendList];
+//        // If the session state is not any of the two "open" states when the button is clicked
+//    }
+//    else {
+//        // Open a session showing the user the login UI
+//        // You must ALWAYS ask for basic_info permissions when opening a session
+//        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+//                                           allowLoginUI:YES
+//                                      completionHandler:
+//         ^(FBSession *session, FBSessionState state, NSError *error) {
+//             
+//             [self sessionStateChanged:session state:state error:error];
+//         }];
+//    }
+    [[FbMethods sharedManager] setDelegate:(id)self];
+    [[FbMethods sharedManager] getFacebookFriendListwithDetail];
+
+}
+
+-(void)FacebookFriendList:(NSArray *)friendDetails withSuccess:(BOOL)isSuccess{
+    if (isSuccess == YES) {
+        [[NSUserDefaults standardUserDefaults] setValue:friendDetails forKey:@"FBContacts"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
+        syncType = @"FBContacts";
+        [self.view setUserInteractionEnabled:YES];
     }
 }
 
@@ -162,7 +174,7 @@
     [self.view setUserInteractionEnabled:YES];}
 
 - (IBAction)didTapToFetchYahooContact:(id)sender {
-    [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:nil];
+    [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:@selector(LoginDidFail:)];
 }
 
 - (IBAction)didTapToFetchGmailContacts:(id)sender {
@@ -293,6 +305,10 @@
     ;
     [[YahooHandler SharedInstance]getUserProfile:self didFinishSelector:@selector(GetUserDetailsDidFinish:) didFailSelector:@selector(GetUserDetailsDidFail:)];
 }
+- (void)LoginDidFail:(NSDictionary *)data{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YAHOO!" message:@"Not Found on Accelerator: social.yahooapis.com. Thank you for your patience. Our engineers are working quickly to resolve the issue." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+    [alert show];
+}
 - (void)GetUserDetailsDidFinish:(NSDictionary *)data{
     NSLog(@"yahoo:%@",data);
     [[YahooHandler SharedInstance]getUserContacts:self didFinishSelector:@selector(GetUserContactListDidFinish:) didFailSelector:@selector(GetUserContactListDidFail:)];
@@ -352,12 +368,16 @@
 }
 
 - (void)GetUserContactListDidFail:(NSDictionary *)data{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YAHOO!" message:@"Not Found on Accelerator: social.yahooapis.com. Thank you for your patience. Our engineers are working quickly to resolve the issue." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+    [alert show];
     NSLog(@"yahoo:%@",data);
     
 }
 
 - (void)GetUserDetailsDidFail:(NSDictionary *)data{
     ;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YAHOO!" message:@"Not Found on Accelerator: social.yahooapis.com. Thank you for your patience. Our engineers are working quickly to resolve the issue." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+    [alert show];
     NSLog(@"yahoo:%@",data);
     
 }

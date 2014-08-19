@@ -39,6 +39,10 @@
  * Response after fetching profileDetails.
  */
 -(void)FacebookProfileDetails : (NSDictionary *)profileDetails withSuccess : (BOOL)isSuccess;
+/*
+ * Response after fetching event.
+ */
+-(void)FacebookEventDetail : (NSArray *)events withSuccess : (BOOL)isSuccess;
 @end
 
 @interface FbMethods : NSObject
@@ -67,20 +71,11 @@
 - (void)getFacebookFriendListwithDetail;
 
 /*
- * Get Profile Image By ID
  * Calling Style
  * [[FbMethods sharedManager] getProfileImagewithID:userID withImage:^(UIImage *image){
    }];
  */
-
 - (void)getProfileImagewithID : (NSString *) userID withImage:(void(^)(UIImage *))finishBlock;
-
-/*
- * Get Profile Image URL By ID
- */
-
-- (void)profilePictureUrlbyID : (NSString *) userID withLink:(void(^)(NSString *))finishBlock;
-
 
 /*NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
  @"Sharing Tutorial", @"name",
@@ -100,6 +95,8 @@
  */
 - (void)shareVideo : (NSString *)videoPath;
 
+-(void)syncFaceBookEvent;
+-(void)isDeleteEventByID : (NSString *)eventID;
 /*
  * Freinds using app.
  */

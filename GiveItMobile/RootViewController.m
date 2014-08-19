@@ -166,7 +166,7 @@
 
 - (void)eventsTicket:(GDataServiceTicket *)ticket finishedWithEntries:(GDataFeedCalendarEvent *)feed error:(NSError *)error{
   if( !error ){    NSMutableDictionary *dictionary;
-    for( int section=0; section<[data count]; section++ ){
+    for( int section=0; section < [data count]; section++ ){
       NSMutableDictionary *nextDictionary = [data objectAtIndex:section];
       GDataServiceTicket *nextTicket = [nextDictionary objectForKey:KEY_TICKET];
             if( nextTicket==ticket ){		// We've found the calendar these events are meant for...
@@ -260,6 +260,9 @@
 
 -(void)restoreEvent : (NSMutableArray *)dataEvent{
     NSLog(@"method call");
+    if (!googleEvent) {
+        googleEvent = [[NSMutableArray alloc] init];
+    }
     completeFlag++;
     if (!arraylist) {
         arraylist = [[NSMutableArray alloc] init];
@@ -275,6 +278,23 @@
     if (completeFlag==flag) {
         [self.view setUserInteractionEnabled:YES];
         [_mActivityIndicator startAnimating];
+//        if( indexPath.section<[data count] )
+//            return [data objectAtIndex:indexPath.section];
+//        return nil;
+//        if( dictionary )
+//            return [dictionary valueForKey:KEY_EVENTS];
+//        return nil;
+//        if( events && indexPath.row<[events count] )
+//            return [events objectAtIndex:indexPath.row];
+//        return nil;
+
+//        NSMutableArray *event = [[NSMutableArray alloc] init];
+//        for (int i = 0; i<data.count; i++) {
+//            for (int j = 0; j<[[[data objectAtIndex:i] valueForKey:@"events"] count]; j++) {
+//                 [event addObject:[[[data objectAtIndex:i] valueForKey:@"events"] objectAtIndex:j]];
+//            }
+//        }
+//        [[NSUserDefaults standardUserDefaults] setObject:event forKey:@"GmailOriginalEvents"];
         [[NSUserDefaults standardUserDefaults] setObject:arraylist forKey:@"GmailEvents"];
         [[NSUserDefaults standardUserDefaults] setValue:self.gmailUserID forKey:@"GmailID"];
         [[NSUserDefaults standardUserDefaults] setValue:self.gmailPassword forKey:@"GmailPassword"];

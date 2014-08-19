@@ -60,9 +60,15 @@
 #pragma mark -------------------------------------------
 
 - (IBAction)continueButton:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setValue:@"No" forKey:@"GivitLater"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self performSegueWithIdentifier:@"didBuyGiftPayment" sender:self];
+    if (self.messageTextField.text == nil || self.messageTextField.text == (id)[NSNull null] || [[NSString stringWithFormat:@"%@",self.messageTextField.text] length] == 0 || [[[NSString stringWithFormat:@"%@",self.messageTextField.text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"Please enter a message to continue" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+        [alert show];
+    }
+    else{
+        [[NSUserDefaults standardUserDefaults] setValue:@"No" forKey:@"GivitLater"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self performSegueWithIdentifier:@"didBuyGiftPayment" sender:self];
+    }
 }
 
 - (IBAction)didTapToUpload:(id)sender {
@@ -82,6 +88,11 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSegueWithIdentifier:@"segueGiveMeLater" sender:self];
     
+}
+
+- (IBAction)didTapInformationButton:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please upload video if size 1Mb and Image of size 500Kb" delegate:Nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+    [alert show];
 }
 
 #pragma mark Perform Segue
@@ -130,12 +141,6 @@
 
 - (void) textViewDidChange:(UITextView *)textView
 {
-//    if(![textView hasText]) {
-//        _lbl.hidden = NO;
-//    }
-//    else{
-//        _lbl.hidden = YES;
-//    }
 }
 
 

@@ -7,7 +7,8 @@
 //
 
 #import "GIM_AppDelegate.h"
-
+#import "FbMethods.h"
+#import "GIM_HomeViewController.h"
 @implementation GIM_AppDelegate
 @synthesize deviceTokenString;
 @synthesize yahoohandler;
@@ -17,57 +18,66 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     if (launchOptions) {
         NSLog(@"Lanch optionssssssssssssssssss %@", [[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"]);
-        if ([[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"]) {
-            NSMutableArray *message = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:@"myMessage"]];
-            if (!message) {
-                message = [[NSMutableArray alloc] init];
-            }
-            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            if ([[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg"] length]>0) {
-                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg"]forKey:@"message"];
-            }
-            else{
-                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"alert"]forKey:@"message"];
-            }
-            if ([[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_date"]) {
-                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_date"]forKey:@"messagedate"];
-            }
-            else{
-                [dict setObject:@""forKey:@"messagedate"];
-            }
-            [dict setValue:@"unread" forKey:@"status"];
-            
-//            
-//            
-//            if ([[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg"] length]>0) {
-//                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg"]forKey:@"message"];
-//                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_date"]forKey:@"messagedate"];
-//                [dict setValue:@"unread" forKey:@"status"];
-//            }else{
-//                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"alert"]forKey:@"message"];
-//                [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_date"]forKey:@"messagedate"];
-//                [dict setValue:@"unread" forKey:@"status"];
-//            }
-            [message addObject:dict];
-            [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"myMessage"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+// 	    alert = Notification;
+//	    badge = 1;
+//	    msg = "";
+//	    "msg_date" = "03/28/2014";
+//	    "msg_type" = "SEND_GIFT_CARD";
+//	    sound = "ping2.caf";
+       if ([[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"]) {
+           NSMutableArray *message = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:@"myMessage"]];
+           if (!message) {
+               message = [[NSMutableArray alloc] init];
+           }
+           NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+           if ([[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg"] != [NSNull null]) {
+               [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg"]forKey:@"message"];
+           }
+           else{
+               if ([[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"alert"] != [NSNull null]) {
+                   [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"alert"]forKey:@"message"];
+               }
+               else{
+                   [dict setObject:@""forKey:@"message"];
+               }
+           }
+           if ([[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_date"] length]>0) {
+               [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_date"]forKey:@"messagedate"];
+           }
+           else{
+               [dict setObject:@""forKey:@"messagedate"];
+           }
+           [dict setObject:[[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_type"]forKey:@"msg_type"];
+           self.pushViewContyroller = [[[launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"] objectForKey:@"aps"] valueForKey:@"msg_type"];
+           [dict setValue:@"unread" forKey:@"status"];
+           [message insertObject:dict atIndex:0];
+           [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"myMessage"];
+           [[NSUserDefaults standardUserDefaults] synchronize];
+           [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+           self.isGetPush = YES;
+           self.isGetPushPayment =YES;
+           if (self.isPaymentView == NO) {
+               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"You have a New Message Want to see?"  delegate:self cancelButtonTitle:@"No" otherButtonTitles: @"Yes", nil];
+               [alert show];
+           }
         } else {
             
             
         }
     }
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setBackgroundColor:[UIColor colorWithRed:60.0/255.0 green:170.0/255.0 blue:72.0/255.0 alpha:1]];
+    [[UINavigationBar appearance] setBackgroundColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor blueColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+                                                           UITextAttributeTextColor: [UIColor blueColor],
+                                                           UITextAttributeTextShadowColor: [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8],
+                                                           UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
+                                                           /*UITextAttributeFont: [UIFont fontWithName:@"Droid Sans" size:13.0],*/
+                                                           }];
     [[UILabel appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:13]];
     [[UITextField appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:13]];
     [[UITextView appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:12]];
-    [FBSession.activeSession closeAndClearTokenInformation];
-//    for (int i = 0; i<4; i++) {
-//        [self testdata:@"unread"];
-//        [self testdata:@"read"];
-//        [self testdata:@"unread"];
-//    }
+
     return YES;
 }
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -103,6 +113,8 @@
             else{
                 [dict setObject:@""forKey:@"messagedate"];
             }
+            [dict setObject:[[userInfo objectForKey:@"aps"] valueForKey:@"msg_type"]forKey:@"msg_type"];
+            self.pushViewContyroller = [[userInfo objectForKey:@"aps"] valueForKey:@"msg_type"];
             [dict setValue:@"unread" forKey:@"status"];
             [message insertObject:dict atIndex:0];
             [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"myMessage"];
@@ -111,6 +123,7 @@
             self.isGetPush = YES;
             self.isGetPushPayment =YES;
             if (self.isPaymentView == NO) {
+                
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"You have a New Message Want to see?"  delegate:self cancelButtonTitle:@"No" otherButtonTitles: @"Yes", nil];
                 [alert show];
             }
@@ -124,12 +137,27 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
-        NSLog(@"viewcontrollers %@",[(UINavigationController *)self.window.rootViewController viewControllers]);
-        [(UINavigationController *)self.window.rootViewController popToViewController:[[(UINavigationController *)self.window.rootViewController viewControllers] objectAtIndex:1] animated:YES];
-    }
-    else{
         self.isGetPush = NO;
         self.isGetPushPayment =NO;
+        if ([[(UINavigationController *)[self.window rootViewController] viewControllers] count]==2) {
+            NSLog(@"Vc %@",[(UINavigationController *)[self.window rootViewController] viewControllers]);
+            GIM_HomeViewController *home =[[(UINavigationController *)[self.window rootViewController] viewControllers] objectAtIndex:1];
+            [home didTapMySetting:nil];
+            CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[self.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[self.window rootViewController] viewControllers] count]-1];
+            //    tabHome.delegate = (id)self;
+            [tabHome didOpenMassage:@"MESSAGE"];
+        }
+        else if([[(UINavigationController *)[self.window rootViewController] viewControllers] count]>2){
+            CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[self.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[self.window rootViewController] viewControllers] count]-1];
+            //    tabHome.delegate = (id)self;
+            [tabHome didOpenMassage:@"MESSAGE"];
+        }
+        else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Givit Mobile" message:@"You are not login?"  delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+            [alert show];
+        }
+    }
+    else{
     }
 }
 
@@ -157,7 +185,7 @@
 
     }
     else{
-     [FBSession.activeSession handleOpenURL:url];
+        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication withSession:[[FbMethods sharedManager] session]];
 
     }
     return YES;

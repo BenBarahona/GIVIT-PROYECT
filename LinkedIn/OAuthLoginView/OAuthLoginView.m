@@ -263,7 +263,7 @@
 
 - (void)GetUserProfile
 {
-    NSURL *url = [NSURL URLWithString:@"http://api.linkedin.com/v1/people::(~,hks0NPUMZF):(id,first-name,last-name,headline,picture-url,email-address)"];
+    NSURL *url = [NSURL URLWithString:@"http://api.linkedin.com/v1/people::(~,hks0NPUMZF):(id,first-name,last-name,headline,picture-url,email-address,formatted-name)"];
     OAMutableURLRequest *request = 
             [[OAMutableURLRequest alloc] initWithURL:url
                                             consumer:consumer
@@ -332,7 +332,7 @@
 
         //https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry,headline,email-address,picture-url,public-profile-url)
         
-        NSURL *url = [NSURL URLWithString:@"https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry,headline,email-address,picture-url,public-profile-url,formatted-name,location:(name),positions)"];
+        NSURL *url = [NSURL URLWithString:@"https://api.linkedin.com/v1/people/~/connections:(id,email-address,picture-url,formatted-name)"];
        
         
         OAMutableURLRequest *request =
@@ -584,7 +584,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.view setFrame:[[UIScreen mainScreen] bounds]];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -713,15 +713,16 @@
                                                      name:@"loginViewDidFinish"
                                                    object:self];
         self.oldKeyWindow = [[UIApplication sharedApplication] keyWindow];
-        if (!self.loginwindow) {
-            UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-            window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            window.opaque = NO;
-            window.windowLevel = UIWindowLevelAlert;
-            window.rootViewController = self;
-            self.loginwindow = window;
-        }
-        [self.loginwindow makeKeyAndVisible];
+//        if (!self.loginwindow) {
+//            UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//            window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//            window.opaque = NO;
+//            window.windowLevel = UIWindowLevelAlert;
+//            window.rootViewController = self;
+//            self.loginwindow = window;
+//        }
+//        [self.loginwindow makeKeyAndVisible];
+        [self.oldKeyWindow.rootViewController.view addSubview:self.view];
     }
     
     else{
@@ -733,15 +734,16 @@
                                                          name:@"loginViewDidFinish"
                                                        object:self];
             self.oldKeyWindow = [[UIApplication sharedApplication] keyWindow];
-            if (!self.loginwindow) {
-                UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-                window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                window.opaque = NO;
-                window.windowLevel = UIWindowLevelAlert;
-                window.rootViewController = self;
-                self.loginwindow = window;
-            }
-            [self.loginwindow makeKeyAndVisible];
+//            if (!self.loginwindow) {
+//                UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//                window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//                window.opaque = NO;
+//                window.windowLevel = UIWindowLevelAlert;
+//                window.rootViewController = self;
+//                self.loginwindow = window;
+//            }
+//            [self.loginwindow makeKeyAndVisible];
+            [self.oldKeyWindow.rootViewController.view addSubview:self.view];
         }
         else{
             if([[self OAuthDelegate] respondsToSelector:@selector(LoginSuccessful)]){
@@ -791,10 +793,11 @@
     lbl_message.text=@"Just a minute - Connecting to Linkedin.";
     [self.view addSubview:lbl_message];
     
-    btnClose=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+    btnClose=[UIButton buttonWithType:UIButtonTypeCustom];
     btnClose.frame=CGRectMake(screenBounds.size.width-40, 10, 30, 30);
     [btnClose setTitle:@"X" forState:UIControlStateNormal];
-    btnClose.backgroundColor=[UIColor yellowColor];
+    [btnClose.titleLabel setTextColor:[UIColor blackColor]];
+    btnClose.backgroundColor=[UIColor clearColor];
     [btnClose addTarget:self action:@selector(CLICK_CROSS:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnClose];
     //[addressBar setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
@@ -804,7 +807,7 @@
     //return;
     [self.loginwindow removeFromSuperview];
     self.loginwindow.hidden=YES;
-    self.loginwindow=nil;
+    [self.view removeFromSuperview];
 }
 
 @end

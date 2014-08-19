@@ -35,6 +35,7 @@
     cardNameArray = [[NSArray alloc] initWithObjects:@"Master Card", @"Visa", @"American Express", @"Discover", nil];
     [_mDatePicker setDatePickerMode:UIDatePickerModeDate];
     _mPickerView.hidden = YES;
+    NSLog(@"Amount%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"Amount"]);
     _mDueLabel.text = [NSString stringWithFormat:@"$%0.2f",[[[NSUserDefaults standardUserDefaults] valueForKey:@"Amount"] floatValue]];
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
                                                                      0.0f,

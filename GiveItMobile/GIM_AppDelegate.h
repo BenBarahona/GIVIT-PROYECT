@@ -16,7 +16,8 @@
 #import "YOSSocial.h"
 #import "YOAuthRequest.h"
 #import "YahooHandler.h"
-
+#import "CustomButtonTabController.h"
+#import "GIM_MyMessage.h"
 @interface GIM_AppDelegate : UIResponder <UIApplicationDelegate,YOSRequestDelegate,UIAlertViewDelegate>{
     YahooHandler *yahoohandler;
 
@@ -26,9 +27,11 @@
 @property BOOL isGetPushPayment;
 @property BOOL isGetPushGOD;
 @property BOOL isPaymentView;
+@property (strong,nonatomic)NSString *massageTapScreen;
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong,nonatomic)NSString *deviceTokenString;
+@property (strong,nonatomic)NSString *pushViewContyroller;
 @property(nonatomic,strong) YOSAuthRequest *appdelegateRequestToken;
 @property(nonatomic,strong) NSURL *authorizationUrl;
 

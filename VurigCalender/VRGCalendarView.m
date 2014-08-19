@@ -278,6 +278,7 @@
     [labelCurrentMonth sizeToFit];
     labelCurrentMonth.frameX = roundf(self.frame.size.width/2 - labelCurrentMonth.frameWidth/2);
     labelCurrentMonth.frameY = 10;
+    [labelCurrentMonth setBackgroundColor:[UIColor clearColor]];
     [formatter release];
     [currentMonth firstWeekDayInMonth];
     
@@ -286,7 +287,7 @@
     
     CGRect rectangle = CGRectMake(0,0,self.frame.size.width,kVRGCalendarViewTopBarHeight);
     CGContextAddRect(context, rectangle);
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0.0 green:146.0/255.0 blue:202.0/255.0 alpha:1].CGColor);
     CGContextFillPath(context);
     
     //Arrows
@@ -302,7 +303,7 @@
     CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
     
     CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
+                                   [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Arrow right
@@ -313,7 +314,7 @@
     CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
     
     CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
+                                   [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Weekdays
@@ -503,10 +504,10 @@
         int targetColumn = targetBlock%7;
         int targetRow = targetBlock/7;
         
-        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2) + 7;
+        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2) + kVRGCalendarViewDayWidth/2;
         int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2) + 38;
         
-        CGRect rectangle = CGRectMake(targetX,targetY,32,2);
+        CGRect rectangle = CGRectMake(targetX,targetY,2,2);
         CGContextAddRect(context, rectangle);
         
         UIColor *color;

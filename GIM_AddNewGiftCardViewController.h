@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GIM_UserController.h"
 #import "GIM_UserModel.h"
-
+#import "NSString+HTML.h"
 #import "GIM_AppDelegate.h"
 #import "CustomButtonTabController.h"
 

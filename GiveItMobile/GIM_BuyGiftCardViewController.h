@@ -28,7 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *mFamountButton;
 @property (weak, nonatomic) IBOutlet UIButton *mSamountButton;
 @property (weak, nonatomic) IBOutlet UIButton *mTamountButton;
-
+@property (weak, nonatomic) IBOutlet UIScrollView *mScrollView;
+-(void)loadRetailer;
 
 - (IBAction)didTapSelect10:(id)sender;
 - (IBAction)didTapSelect20:(id)sender;

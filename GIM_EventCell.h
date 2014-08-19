@@ -12,5 +12,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *eventTimeLabel;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionTextView;
-
+@property (weak, nonatomic) IBOutlet UIButton *mCheckButton;
 @end

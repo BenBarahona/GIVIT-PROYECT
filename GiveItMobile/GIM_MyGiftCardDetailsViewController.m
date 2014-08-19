@@ -39,9 +39,9 @@
     NSString *selectDate = [dateFormatter stringFromDate:dateFromString];
      lblAsOf.text = [NSString stringWithFormat:@"As Of %@",selectDate];
     if ([detailDict valueForKey:@"gift_user_name"] != [NSNull null])
-    lblReceivedFrom.text = [detailDict valueForKey:@"gift_user_name"];
+    lblReceivedFrom.text = [detailDict valueForKey:@"name"];
     if (lblReceivedFrom.text.length<=0) {
-        lblReceivedFrom.text = @"Me";
+        lblReceivedFrom.text = [detailDict valueForKey: @"retailer_name"];
         _mBarcodeNumberLabel.text = [detailDict valueForKey: @"card_code"];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.mymobilerewards.net/sysfiles/barcode.php?codetype=code128&size=160&text=%@",[detailDict valueForKey: @"card_code"]]];
         [_mActivityIndicator startAnimating];
@@ -65,6 +65,11 @@
             });
         });
     }
+    GIM_UserController *userController = [[GIM_UserController alloc]init];
+    
+    userController.delegate = (id)self;
+    
+    [userController updateGftCardCount:[self.detailDict valueForKey:@"id"]];
     
 	// Do any additional setup after loading the view.
     
@@ -103,12 +108,12 @@
     //create the button and assign the image
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImage imageNamed:@"btn_next_arrow_01.png"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"btn_next_arrow_02.png"] forState:UIControlStateHighlighted];
+    //[button setImage:[UIImage imageNamed:@"btn_next_arrow_02.png"] forState:UIControlStateHighlighted];
     button.adjustsImageWhenDisabled = NO;
     
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [button1 setImage:[UIImage imageNamed:@"btn_home_01.png"] forState:UIControlStateNormal];
-    [button1 setImage:[UIImage imageNamed:@"btn_home_02.png"] forState:UIControlStateHighlighted];
+    //[button1 setImage:[UIImage imageNamed:@"btn_home_02.png"] forState:UIControlStateHighlighted];
     button1.adjustsImageWhenDisabled = NO;
     
     //set the frame of the button to the size of the image (see note below)

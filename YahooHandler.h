@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "YOSSession.h"
 #import "YOSRequestClient.h"
-#import "NSString+SBJSON.h"
+#import "NSString+SBJSONYAHOO.h"
 #import "YOSUser.h"
 #import "YOSUserRequest.h"
 

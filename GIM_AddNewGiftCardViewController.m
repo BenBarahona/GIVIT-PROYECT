@@ -28,6 +28,7 @@
 {
     
     [super viewDidLoad];
+    [_mSubmitButton setFrame:CGRectMake(_mSubmitButton.frame.origin.x, couponNoText.frame.size.height+couponNoText.frame.origin.y+30, _mSubmitButton.frame.size.width, _mSubmitButton.frame.size.height)];
     [self setValue:[UIFont fontWithName:@"Droid Sans" size:16] forKeyPath:@"buttons.font"];
     GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
     GIM_UserController *userController = [[GIM_UserController alloc]init];
@@ -127,7 +128,6 @@
     }
     else{
         cell.textLabel.text = [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"name"];
-        re_id =[NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"id"]];
     }
     return cell;
 }
@@ -144,6 +144,7 @@
         couponNoText.text = nil;
     }
     else{
+        re_id =[NSString stringWithFormat:@"%@",[[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"id"]];
         nameLabel.text = [[itemGiftCardDetails objectAtIndex:indexPath.row] valueForKey:@"name"];
         _otherRetailerFormView.hidden = YES;
         [_mSubmitButton setFrame:CGRectMake(_mSubmitButton.frame.origin.x, couponNoText.frame.size.height+couponNoText.frame.origin.y+30, _mSubmitButton.frame.size.width, _mSubmitButton.frame.size.height)];
@@ -200,7 +201,7 @@
 
 - (IBAction)submitButton:(id)sender {
     [_mScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-   
+    [flagTextField resignFirstResponder];
     if ([nameLabel.text isEqualToString:@"Select Retailer Name"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Must Enter A Retailer Name" delegate:Nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
         [alert show];
@@ -310,7 +311,7 @@
     [_mActivityIndicator stopAnimating];
     if(isSuccess){
         
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Alert" message:msg delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Alert" message:[ msg  stringByConvertingHTMLToPlainText] delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
 
         

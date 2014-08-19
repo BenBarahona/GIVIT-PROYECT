@@ -30,19 +30,8 @@
     [self.mDescriptionLabel setFont:[UIFont fontWithName:@"DroidSans-Bold" size:13]];
     [self.mTargetGiftCard setFont:[UIFont fontWithName:@"DroidSans-Bold" size:13]];
     [self setValue:[UIFont fontWithName:@"Droid Sans" size:16] forKeyPath:@"buttons.font"];
-    GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"YYYY-MM-dd"];
-    NSString *selectDate = [dateFormat stringFromDate:[NSDate date]];
-    userModel.date = selectDate;
-    GIM_UserController *userController = [[GIM_UserController alloc]init];
-     
-    userController.delegate = self;
-    
-    [userController giftOfDay:userModel];
-    
-    [self.indc startAnimating];
-    
+    [self loadGiftCard];
+   
 	// Do any additional setup after loading the view.
 }
 
@@ -50,6 +39,22 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)loadGiftCard{
+    GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"YYYY-MM-dd"];
+    NSString *selectDate = [dateFormat stringFromDate:[NSDate date]];
+    userModel.date = selectDate;
+    GIM_UserController *userController = [[GIM_UserController alloc]init];
+    
+    userController.delegate = self;
+    
+    [userController giftOfDay:userModel];
+    
+    [self.indc startAnimating];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -80,16 +85,20 @@
 
 -(void)didGiftOfDay:(NSDictionary *)msg isSuccess:(BOOL)isSuccess
 {
-    if(isSuccess)
+    [self.view setUserInteractionEnabled:YES];
+   if(isSuccess)
     {
         //[self.view setUserInteractionEnabled:YES];
         //[self.indc stopAnimating];
+        float original_amount =[[[ msg valueForKey:@"day_item"] valueForKey:@"original_amount"] floatValue];
+        float givit_amount = [[[ msg valueForKey:@"day_item"] valueForKey:@"discounted_amount"] floatValue];
+        float discount = ((original_amount - givit_amount)/original_amount) *100 ;
+        valueLabel.text = [NSString stringWithFormat:@"$%0.2f",original_amount];
+        givitLabel.text = [NSString stringWithFormat:@"$%0.2f",givit_amount];
+        savingLabel.text = [NSString stringWithFormat:@"%0.2f%%",discount];
         paymentDict = [NSMutableDictionary dictionaryWithDictionary:[msg valueForKey:@"reatler_item"]];
-        valueLabel.text = [NSString stringWithFormat:@"$%0.2f",[[[ msg valueForKey:@"day_item"] valueForKey:@"original_amount"] floatValue]];
-        savingLabel.text = [NSString stringWithFormat:@"%0.2f%%",([[[ msg valueForKey:@"day_item"] valueForKey:@"discounted_amount"] floatValue]/[[[ msg valueForKey:@"day_item"] valueForKey:@"original_amount"] floatValue])*100];
         self.mDescriptionTextView.text = [[[ msg valueForKey:@"day_item"] valueForKey:@"description"] stringByConvertingHTMLToPlainText];
-        givitLabel.text = [NSString stringWithFormat:@"$%@",[NSString stringWithFormat:@"%0.2f",([[[ msg valueForKey:@"day_item"] valueForKey:@"original_amount"] floatValue]- [[[ msg valueForKey:@"day_item"] valueForKey:@"discounted_amount"] floatValue]) ]];
-        [[NSUserDefaults standardUserDefaults] setValue: [NSString stringWithFormat:@"%f",([[[ msg valueForKey:@"day_item"] valueForKey:@"original_amount"] floatValue]- [[[ msg valueForKey:@"day_item"] valueForKey:@"discounted_amount"] floatValue])] forKey:@"Amount"];
+        [[NSUserDefaults standardUserDefaults] setValue: [NSString stringWithFormat:@"%0.2f",givit_amount] forKey:@"Amount"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         NSURL *url = [NSURL URLWithString:[[ msg valueForKey:@"day_item"] valueForKey:@"image"]];
         
@@ -106,7 +115,6 @@
     }
     else
     {
-       [self.view setUserInteractionEnabled:YES];
        [self.indc stopAnimating];
     }
 }

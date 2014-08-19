@@ -30,11 +30,6 @@
     [self setValue:[UIFont fontWithName:@"Driod Sans" size:10] forKeyPath:@"buttons.font"];
     [_mGiftAmountView setHidden:YES];
     amount = [[_mFamountButton.titleLabel.text substringFromIndex:1] integerValue];
-    GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
-    GIM_UserController *userController = [[GIM_UserController alloc]init];
-    userController.delegate = (id)self;
-    [userController buyGiftCard:userModel];
-    [_mActivityIndicator startAnimating];
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
                                                                      0.0f,
                                                                      self.view.window.frame.size.width,
@@ -59,6 +54,14 @@
     NSLog(@"tableview subviews %@",    buyGiftTableView.subviews);
 }
 
+-(void)loadRetailer{
+    GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
+    GIM_UserController *userController = [[GIM_UserController alloc]init];
+    userController.delegate = (id)self;
+    [userController buyGiftCard:userModel];
+    [_mActivityIndicator startAnimating];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.title = @"Buy Gift Cards";
@@ -66,6 +69,7 @@
     CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[appD.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[appD.window rootViewController] viewControllers] count]-1];
     [tabHome setHeaderTitleLabelText:self.navigationController];
     [tabHome setHiddenOnOffExtraButton:YES];
+    [self loadRetailer];
 }
 
 - (void)didReceiveMemoryWarning
@@ -301,15 +305,17 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     flagAmount = amount;
+    [self.mScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y-40)];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.mScrollView setContentOffset:CGPointMake(0, 0)];
     [textField resignFirstResponder];
     return YES;
 }
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-    
+    [self.mScrollView setContentOffset:CGPointMake(0, 0)];
     amount = [textField.text integerValue];
     if (amount == 0) {
         amount = flagAmount;

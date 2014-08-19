@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *mCardAmountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mCardValue;
 @property (weak, nonatomic) IBOutlet UILabel *mBalance;
+@property (weak, nonatomic) IBOutlet UILabel *retailerNameLabel;
 
 @end

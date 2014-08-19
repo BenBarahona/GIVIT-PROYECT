@@ -26,4 +26,15 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)didTapCheckButton:(id)sender {
+    if (self.delegate) {
+        [self.delegate checkButtonClickedwithTag:[(UIButton *)sender tag]];
+    }
+}
+
+- (IBAction)didTapGotoButton:(id)sender {
+    if (self.delegate) {
+        [self.delegate gotoButtonClickedwithTag:[(UIButton *)sender tag]];
+    }
+}
 @end

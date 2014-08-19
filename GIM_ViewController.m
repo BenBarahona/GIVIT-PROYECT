@@ -7,7 +7,7 @@
 //
 
 #import "GIM_ViewController.h"
-#import "NSString+SBJSON.h"
+#import "NSString+SBJSONYAHOO.h"
 #import "YOSUser.h"
 #import "YOSUserRequest.h"
 @interface GIM_ViewController ()
@@ -22,19 +22,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    isLinkedInLoginSuccess = NO;
     _mGmailLoginView.hidden = YES;
     [self setValue:[UIFont fontWithName:@"Droid Sans" size:15] forKeyPath:@"buttons.font"];
 	// Do any additional setup after loading the view, typically from a nib.
     [self.email setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [self.password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     
-    _googleOAuth = [[GoogleOAuth alloc] initWithFrame:CGRectMake(0, 0, 320, _mGmailLoginView.frame.size.height-50)];
+    _googleOAuth = [[GoogleOAuth alloc] initWithFrame:CGRectMake(0, 0, 320, _mGmailLoginView.frame.size.height-120)];
     [_googleOAuth setGOAuthDelegate:(id)self];
     [_googleOAuth revokeAccessToken];
     [_googleOAuth revokeAccessToken];
-    
-    
     appDelegate=(GIM_AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
+    [[LinkedINAPIFunction sharedManager] createLogINViewwithAPISecretKey:@"75ma6wrvk4fhfa" withSecretKey:@"vaFhqoAwhVfJRwx4"];
+    [[LinkedINAPIFunction sharedManager]setDelegate:(id)self];
 
 }
 
@@ -45,7 +47,6 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    
     if ([[def valueForKey:@"remember"] isEqualToString:@"yes"]) {
         email.text = [def valueForKey:@"emailID"];
         password.text = [def valueForKey:@"password"];
@@ -57,7 +58,8 @@
     else{
         email.text = nil;
         password.text = nil;
-        [_mCheckBoxImageView setImage:[UIImage imageNamed:@"btn_tickmark_01.png"]];
+        [_mCheckBoxImageView setImage:[UIImage imageNamed:@"btn_tickmark_02.png"]];
+        [def setValue:@"yes" forKey:@"remember"];
     }
     [def synchronize];
 }
@@ -73,13 +75,15 @@
 
 
 -(void)didError:(NSString *)msg{
-    [_indc stopAnimating];
+    [self.indc stopAnimating];
+   [_indc stopAnimating];
     [self.view setUserInteractionEnabled:YES];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:msg delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alert show];
 }
 
 -(void)didLoggedIn:(NSDictionary *)dict isSuccess:(BOOL)isSuccess {
+    [self.indc stopAnimating];
     [[NSUserDefaults standardUserDefaults] setValue:email.text forKey:@"Myemail"];
     [[NSUserDefaults standardUserDefaults] setValue:password.text forKey:@"Mypass"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -90,8 +94,8 @@
             [def setValue:password.text forKey:@"password"];
         }
         else{
-            [def setValue:nil forKey:@"emailID"];
-            [def setValue:nil forKey:@"password"];
+            [def setValue:@"" forKey:@"emailID"];
+            [def setValue:@"" forKey:@"password"];
         }
         
         [self performSegueWithIdentifier:@"didLogin" sender:self];
@@ -189,7 +193,7 @@
 }
 
 - (IBAction)didTapGmailSignIn:(id)sender {
-    
+    [self.indc startAnimating];
     [_googleOAuth authorizeUserWithClienID:@"118052793139-trvujb5d8eldudv3csbupksss6amfn5b.apps.googleusercontent.com"
                            andClientSecret:@"tp1UdMtjm_ExEPnKKYGd55Al"
                              andParentView:_mGmailLoginView
@@ -198,22 +202,88 @@
     _mGmailLoginView.hidden = NO;
 }
 - (IBAction)didTapYahooLogin:(id)sender{
-    [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:nil];
+    [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:@selector(LoginDidFail:)];
 }
 
 - (IBAction)didTapToCancelGmailSign:(id)sender {
+    [self.indc stopAnimating];
+    [self.navigationController.navigationBar setHidden:NO];
     _mGmailLoginView.hidden = YES;
 }
 
 - (IBAction)didTapToFBLogin:(id)sender {
-    [FBSession.activeSession closeAndClearTokenInformation];
-    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
-                                       allowLoginUI:YES
-                                  completionHandler:
-     ^(FBSession *session, FBSessionState state, NSError *error) {
-         
-         [self sessionStateChanged:session state:state error:error];
-     }];
+    [self.indc startAnimating];
+//   [FBSession.activeSession closeAndClearTokenInformation];
+//    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+//                                       allowLoginUI:YES
+//                                  completionHandler:
+//     ^(FBSession *session, FBSessionState state, NSError *error) {
+//         if (error) {
+//             [self.indc stopAnimating];
+//         }
+//         [self sessionStateChanged:session state:state error:error];
+//     }];
+    [[FbMethods sharedManager] setDelegate:(id)self];
+    [[FbMethods sharedManager] didFacebookLogin];
+}
+
+#pragma mark FbMethodsDelegates
+#pragma mark +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+-(void)FacebookLoginSuccessFull{
+    [[FbMethods sharedManager] getPersonalDetails];
+}
+
+-(void)getFBdetail{
+    
+}
+
+-(void)FacebookLoginFaliur{
+    
+}
+
+-(void)FacebookProfileDetails:(NSDictionary *)profileDetails withSuccess:(BOOL)isSuccess{
+    if (isSuccess == YES) {
+        NSMutableDictionary *profileData = [[NSMutableDictionary alloc] init];
+        [profileData setValue:[NSString stringWithFormat:@"%@",[profileDetails valueForKey:@"name"]] forKey:@"name"];
+        [profileData setValue:[profileDetails valueForKey:@"email"] forKey:@"emailID"];
+        [profileData setValue:[profileDetails valueForKey:@"id"] forKey:@"fbid"];
+        [self loginFromSocialSite:(NSDictionary *)profileData];
+        
+    } else {
+        
+    }
+}
+
+
+- (IBAction)didTapToLinkedInLogin:(id)sender {
+    [[LinkedINAPIFunction sharedManager] didLinkedINLogin];
+}
+
+#pragma mark - LinkedIn Delegate methods
+#pragma mark -------------------------------------------
+
+
+-(void)LinkedINSuccessFull{
+    isLinkedInLoginSuccess =YES;
+    [[LinkedINAPIFunction sharedManager] fetchUserProfileDetails];
+}
+
+-(void)LinkedINProfileDetails:(NSDictionary *)profileDetails{
+    if (isLinkedInLoginSuccess == YES) {
+        [self.indc stopAnimating];
+        NSMutableDictionary *userData = [[NSMutableDictionary alloc] init];
+        [userData setValue:[[[profileDetails valueForKey:@"values"] objectAtIndex:[[profileDetails valueForKey:@"values"] count]-1] valueForKey:@"formattedName"] forKey:@"name"];
+        [userData setValue:[[[profileDetails valueForKey:@"values"] objectAtIndex:[[profileDetails valueForKey:@"values"] count]-1] valueForKey:@"emailAddress"] forKey:@"emailID"];
+        [self loginFromSocialSite:(NSDictionary *)userData];
+        NSLog(@"%@",profileDetails);
+        isLinkedInLoginSuccess = NO;
+    }
+}
+
+-(void)LinkedINNotSuccessFull{
+    [self.indc stopAnimating];
+//   NSLog(@"%@");
 }
 
 #pragma mark - GoogleOAuth Delegate methods
@@ -241,12 +311,14 @@
 
 
 -(void)errorOccuredWithShortDescription:(NSString *)errorShortDescription andErrorDetails:(NSString *)errorDetails{
+    [self.indc stopAnimating];
     NSLog(@"%@", errorShortDescription);
     NSLog(@"%@", errorDetails);
 }
 
 
 -(void)errorInResponseWithBody:(NSString *)errorMessage{
+    [self.indc stopAnimating];
     NSLog(@"%@", errorMessage);
 }
 
@@ -274,11 +346,13 @@
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
         // If the session is closed
         NSLog(@"Session closed");
+        [self.indc stopAnimating];
         // Show the user the logged-out UI
     }
     
     // Handle errors
     if (error){
+        [self.indc stopAnimating];
         NSLog(@"Error");
         // If the error requires people using an app to make an action outside of the app in order to recover
         if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
@@ -297,6 +371,11 @@
     ;
     [[YahooHandler SharedInstance]getUserProfile:self didFinishSelector:@selector(GetUserDetailsDidFinish:) didFailSelector:@selector(GetUserDetailsDidFail:)];
 }
+
+- (void)LoginDidFail:(NSDictionary *)data{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YAHOO!" message:@"Not Found on Accelerator: social.yahooapis.com. Thank you for your patience. Our engineers are working quickly to resolve the issue." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+    [alert show];
+}
 - (void)GetUserDetailsDidFinish:(NSDictionary *)data{
     NSMutableDictionary *userData = [[NSMutableDictionary alloc] init];
     [userData setValue: [NSString stringWithFormat:@"%@ %@",[[data valueForKey:@"profile"] valueForKey:@"givenName"],[[data valueForKey:@"profile"] valueForKey:@"familyName"]] forKey:@"name"];
@@ -306,7 +385,9 @@
 }
 
 - (void)GetUserDetailsDidFail:(NSDictionary *)data{
-    ;
+    [self.indc stopAnimating];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"YAHOO!" message:@"Not Found on Accelerator: social.yahooapis.com. Thank you for your patience. Our engineers are working quickly to resolve the issue." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+    [alert show];
     NSLog(@"yahoo:%@",data);
     
 }
@@ -360,11 +441,10 @@
     userModel.name = [profiledata valueForKey:@"name"];
     
     userModel.email = [profiledata valueForKey:@"emailID"];
-    
+    userModel.fbid = [profiledata valueForKey:@"fbid"];
     GIM_AppDelegate *appD = (GIM_AppDelegate*)[[UIApplication sharedApplication] delegate];
     userModel.deviceToken = appD.deviceTokenString;
     userModel.deviceType = @"I";
-    
     userModel.userid = @"";
     GIM_UserController *userController = [[GIM_UserController alloc]init];
     

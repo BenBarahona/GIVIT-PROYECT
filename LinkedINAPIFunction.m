@@ -71,12 +71,12 @@
 }
 -(void)LoginSuccessful{
     NSLog(@"LOGIN SUCCESS");
-    [self showingMessage:@"Login SucessFul" withSuccess:YES];
+    [self.delegate LinkedINSuccessFull];
 }
 
 -(void)LoginFailed{
     NSLog(@"LOGIN FAILED");
-    [self showingMessage:@"Login Failed" withSuccess:NO];
+    [self.delegate LinkedINNotSuccessFull];
 }
 
 -(void)LogOutFailed{
@@ -84,7 +84,6 @@
 }
 
 -(void)LogOutSuccessful{
-    [self showingMessage:@"LogOut SucessFul" withSuccess:YES];
 }
 -(void)GetLinkedInContactsDidFinish:(NSMutableDictionary *)contacts{
     NSLog(@"contacts %@",contacts);
@@ -121,14 +120,12 @@
 
 }
 -(void)showingMessage : (NSString *)message withSuccess :(BOOL) isSuccess{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+//    [alert show];
     if (self.delegate) {
         if (isSuccess == YES) {
-            [self.delegate LinkedINSuccessFull];
         }
         else{
-            [self.delegate LinkedINNotSuccessFull];
         }
     }
 }

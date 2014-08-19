@@ -15,7 +15,22 @@
 
 @interface GIM_UpcomingEvents : UIViewController{
     NSMutableArray *totalEvent;
+    NSMutableArray *showingEvent, *checkArray;
+    BOOL isAppevent,isFBevent,isGmailEvent;
 }
 @property (weak, nonatomic) IBOutlet UITableView *mUpcomingTableView;
+@property (weak, nonatomic) IBOutlet UIButton *appEventButton;
+@property (weak, nonatomic) IBOutlet UIButton *fEventButton;
+@property (weak, nonatomic) IBOutlet UIButton *gEventButton;
+@property (weak, nonatomic) IBOutlet UIImageView *mSelectallCheckBoxImageView;
+@property (weak, nonatomic) IBOutlet UIView *mDeleteView;
+@property (weak, nonatomic) IBOutlet UILabel *mDisplayLabel;
+
+- (IBAction)didTapCheckButton:(id)sender;
+- (IBAction)didTapAppEvent:(id)sender;
+- (IBAction)didTapFbEvent:(id)sender;
+- (IBAction)didTapGmailEvent:(id)sender;
+- (IBAction)didTapSelectAll:(id)sender;
+- (IBAction)didTapDeleteButton:(id)sender;
 
 @end

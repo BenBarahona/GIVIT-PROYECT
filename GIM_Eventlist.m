@@ -145,7 +145,7 @@
 #pragma mark Class Method
 #pragma mark -------------------------------------------
 
--(void)gotoAddNewContact{
+-(void)gotoAddNewEvent{
     GIM_AppDelegate *appD = (GIM_AppDelegate*)[[UIApplication sharedApplication] delegate];
     CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[appD.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[appD.window rootViewController] viewControllers] count]-1];
     [tabHome setCustomNavigationViewFrame:tabHome.view.frame];
@@ -168,8 +168,6 @@
 }
 #pragma mark GIM_UserServiceDelegate
 #pragma mark -------------------------------------------
-
-
 -(void)didError:(NSString *)msg{
     [_mActivityIndicator stopAnimating];
     [self.view setUserInteractionEnabled:YES];
@@ -247,7 +245,11 @@
 }
 
 - (IBAction)didTapToOpenDatePicker:(id)sender {
-    _mPickerView.hidden =NO;
+    [_mLocationTextField resignFirstResponder];
+    [_mTitleTextField resignFirstResponder];
+    [_mDescriptionTextField resignFirstResponder];
+    [_mDurationTextField resignFirstResponder];
+   _mPickerView.hidden =NO;
 }
 - (IBAction)didTapToSelectDate:(id)sender {
     NSDate *myDate = _mDatePicker.date;

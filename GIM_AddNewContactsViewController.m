@@ -75,7 +75,7 @@
 #pragma mark -------------------------------------------
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    [_mScrollview setContentOffset:CGPointMake(0, textField.frame.origin.y-20) animated:YES];
+    [_mScrollview setContentOffset:CGPointMake(0, textField.frame.origin.y-80) animated:YES];
    return YES;
 }
 

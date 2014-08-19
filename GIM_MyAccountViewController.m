@@ -74,7 +74,7 @@
     
     [userController myAcc:userModel];
     
-
+    [self.mScrollView setContentSize:CGSizeMake(320, 480)];
    NSLog(@"%@", [_mDatePicker.viewForBaselineLayout subviews]);
 	// Do any additional setup after loading the view.
 }

@@ -64,22 +64,22 @@
         
         // if the session isn't open, let's open it now and present the login UX to the user
         [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"email"]
-                                              allowLoginUI:YES
-                                         completionHandler:
+                                           allowLoginUI:YES
+                                      completionHandler:
          ^(FBSession *session, FBSessionState state, NSError *error) {
-            // Call delegate for Our Work
-            if (!error) {
-                NSLog(@"LOGGING SucessFUL");
-                if (self.delegate) {
-                    [self.delegate FacebookLoginSuccessFull];
-                }
-            }
-            else{
-                if (self.delegate) {
-                    [self.delegate FacebookLoginFaliur];
-                }
-            }
-        }];
+             // Call delegate for Our Work
+             if (!error) {
+                 NSLog(@"LOGGING SucessFUL");
+                 if (self.delegate) {
+                     [self.delegate FacebookLoginSuccessFull];
+                 }
+             }
+             else{
+                 if (self.delegate) {
+                     [self.delegate FacebookLoginFaliur];
+                 }
+             }
+         }];
     }
     else{
         if (self.delegate) {
@@ -138,7 +138,7 @@
                 if (self.delegate) {
                     [self.delegate FacebookFriendList:(NSArray *)friends withSuccess : YES];
                 }
-
+                
             }
             else{
                 if (self.delegate) {
@@ -217,22 +217,22 @@
 -(void)getPersonalDetails{
     FBSession.activeSession = self.session;
     if (self.session.isOpen) {
-         FBRequest* myRequest = [FBRequest requestForMe];
-         [myRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
-                                                  NSDictionary* result,
-                                                  NSError *error1) {
-             
-             if (!error1) {
-                 if (self.delegate) {
-                     [self.delegate FacebookProfileDetails:result withSuccess:YES];
-                 }
-             }
-             else {
-                 if (self.delegate) {
-                     [self.delegate FacebookProfileDetails:nil withSuccess:NO];
-                 }
-             }
-         }];
+        FBRequest* myRequest = [FBRequest requestForMe];
+        [myRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
+                                                 NSDictionary* result,
+                                                 NSError *error1) {
+            
+            if (!error1) {
+                if (self.delegate) {
+                    [self.delegate FacebookProfileDetails:result withSuccess:YES];
+                }
+            }
+            else {
+                if (self.delegate) {
+                    [self.delegate FacebookProfileDetails:nil withSuccess:NO];
+                }
+            }
+        }];
     }else{
         if (self.session.state != FBSessionStateCreated) {
             // Create a new, logged out session.
@@ -299,32 +299,6 @@
         });
     });
 }
-/*
- * Get Profile Image URL By ID
- */
-
-- (void)profilePictureUrlbyID : (NSString *) userID withLink:(void(^)(NSString *))finishBlock{
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                   @"false", @"redirect",
-                                   @"large", @"type",
-                                   nil];
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/picture",userID]
-                                 parameters:params
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              if (!error) {
-                                  finishBlock([[result valueForKey:@"data"] valueForKey:@"url"]);
-                              }
-                              else {
-                                  finishBlock(@"");
-                              }
-                          }];
-}
-
 
 /*
  * Share feed
@@ -742,7 +716,7 @@
                                          }
                                      }];
     }
-
+    
 }
 
 
@@ -828,7 +802,7 @@
                  if (!self.delegate) {
                      [self.delegate FacebookAppRequestComplete:NO];
                  }
-            } else {
+             } else {
                  // Handle the send request callback
                  NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
                  if (![urlParams valueForKey:@"request"]) {
@@ -844,7 +818,7 @@
                      if (!self.delegate) {
                          [self.delegate FacebookAppRequestComplete:YES];
                      }
-                }
+                 }
              }
          }
      }];
@@ -913,6 +887,144 @@
     [self sendRequest:nil withMessage : message withTitle : title];
 }
 
+
+
+-(void)syncFaceBookEvent{
+    if (!self.session.isOpen) {
+        if (self.session.state != FBSessionStateCreated) {
+            // Create a new, logged out session.
+            self.session = [[FBSession alloc] init];
+        }
+        
+        // if the session isn't open, let's open it now and present the login UX to the user
+        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"friends_events",@"user_events"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             // Call delegate for Our Work
+             if (!error) {
+                 NSString *query =
+                 @"{"
+                 @"'event_info':'SELECT eid, venue, name, start_time, end_time, creator, host ,description, attending_count from event WHERE eid in (SELECT eid FROM event_member WHERE uid = me())',"
+                 @"'event_venue':'SELECT name, location, page_id FROM page WHERE page_id IN (SELECT venue.id FROM #event_info)',"
+                 @"}";
+                 NSDictionary *queryParam = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             query, @"q", nil];
+                 FBSession.activeSession = self.session;
+                 [FBRequestConnection startWithGraphPath:@"/fql" parameters:queryParam
+                                              HTTPMethod:@"GET" completionHandler:^(FBRequestConnection *connection,
+                                                                                    id result, NSError *error) {
+                                                  if (error) {
+                                                      NSLog(@"Error: %@", [error localizedDescription]);
+                                                  } else {
+                                                      
+                                                      NSArray* data = [result objectForKey:@"data"];
+                                                      NSArray* events = [((NSDictionary*) data[0]) objectForKey:@"fql_result_set"];
+                                                      NSArray* venues = [((NSDictionary*) data[1]) objectForKey:@"fql_result_set"];
+                                                      NSMutableArray * fbEvent = [[NSMutableArray alloc] init];
+                                                      NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                                                      NSLog(@"Result: %@ ",events);
+                                                      NSLog(@"Result: %@ ",venues);
+                                                      for (int i= 0; i<events.count; i++) {
+                                                          NSLog(@"title %@",[[events objectAtIndex:i] valueForKey:@"name"]);
+                                                          NSLog(@"description %@",[[events objectAtIndex:i] valueForKey:@"description"]);
+                                                          NSLog(@"date %@",[[events objectAtIndex:i] valueForKey:@"start_time"]);
+                                                          [dict setValue:[[events objectAtIndex:i] valueForKey:@"eid"] forKey:@"eid"];
+                                                          [dict setValue:[[events objectAtIndex:i] valueForKey:@"name"] forKey:@"title"];
+                                                          [dict setValue:[[events objectAtIndex:i] valueForKey:@"description"] forKey:@"description"];
+                                                          [dict setValue:[[events objectAtIndex:i] valueForKey:@"start_time"] forKey:@"date"];
+                                                          [dict setValue:[[events objectAtIndex:i] valueForKey:@"start_time"] forKey:@"date"];
+                                                          if (venues.count>i) {
+                                                              [dict setValue:[[venues objectAtIndex:i] valueForKey:@"name"] forKey:@"timezone"];
+                                                              [dict setValue:[[venues objectAtIndex:i] valueForKey:@"name"] forKey:@"location"];
+                                                          }
+                                                          [fbEvent addObject:[dict copy]];
+                                                          [dict removeAllObjects];
+                                                      }
+                                                      NSLog(@"Result: %@ ",fbEvent);
+                                                      if (self.delegate) {
+                                                          [self.delegate FacebookEventDetail:(NSArray *)fbEvent withSuccess:YES];
+                                                      }
+                                                  }
+                                              }];
+             }
+             else{
+                 if (self.delegate) {
+                     [self.delegate FacebookEventDetail:nil withSuccess:NO];
+                 }
+             }
+         }];
+    }
+    else{
+        NSString *query =
+        @"{"
+        @"'event_info':'SELECT eid, venue, name, start_time, end_time, creator, host ,description, attending_count from event WHERE eid in (SELECT eid FROM event_member WHERE uid = me())',"
+        @"'event_venue':'SELECT name, location, page_id FROM page WHERE page_id IN (SELECT venue.id FROM #event_info)',"
+        @"}";
+        NSDictionary *queryParam = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    query, @"q", nil];
+        FBSession.activeSession = self.session;
+        [FBRequestConnection startWithGraphPath:@"/fql" parameters:queryParam
+                                     HTTPMethod:@"GET" completionHandler:^(FBRequestConnection *connection,
+                                                                           id result, NSError *error) {
+                                         if (error) {
+                                             NSLog(@"Error: %@", [error localizedDescription]);
+                                         } else {
+                                             
+                                             NSArray* data = [result objectForKey:@"data"];
+                                             NSArray* events = [((NSDictionary*) data[0]) objectForKey:@"fql_result_set"];
+                                             NSArray* venues = [((NSDictionary*) data[1]) objectForKey:@"fql_result_set"];
+                                             NSMutableArray * fbEvent = [[NSMutableArray alloc] init];
+                                             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                                             NSLog(@"Result: %@ ",events);
+                                             NSLog(@"Result: %@ ",venues);
+                                             for (int i= 0; i<events.count; i++) {
+                                                 NSLog(@"title %@",[[events objectAtIndex:i] valueForKey:@"name"]);
+                                                 NSLog(@"description %@",[[events objectAtIndex:i] valueForKey:@"description"]);
+                                                 NSLog(@"date %@",[[events objectAtIndex:i] valueForKey:@"start_time"]);
+                                                 [dict setValue:[[events objectAtIndex:i] valueForKey:@"eid"] forKey:@"eid"];
+                                                 [dict setValue:[[events objectAtIndex:i] valueForKey:@"name"] forKey:@"title"];
+                                                 [dict setValue:[[events objectAtIndex:i] valueForKey:@"description"] forKey:@"description"];
+                                                 [dict setValue:[[events objectAtIndex:i] valueForKey:@"start_time"] forKey:@"date"];
+                                                 [dict setValue:[[events objectAtIndex:i] valueForKey:@"start_time"] forKey:@"date"];
+                                                 if (venues.count>i) {
+                                                     [dict setValue:[[venues objectAtIndex:i] valueForKey:@"name"] forKey:@"timezone"];
+                                                     [dict setValue:[[venues objectAtIndex:i] valueForKey:@"name"] forKey:@"location"];
+                                                 }
+                                                 [fbEvent addObject:[dict copy]];
+                                                 [dict removeAllObjects];
+                                             }
+                                             NSLog(@"Result: %@ ",fbEvent);
+                                             if (self.delegate) {
+                                                 [self.delegate FacebookEventDetail:(NSArray *)fbEvent withSuccess:YES];
+                                             }
+                                         }
+                                     }];
+    }
+}
+
+
+-(void)isDeleteEventByID : (NSString *)eventID{
+    [FBSession openActiveSessionWithPublishPermissions:@[@"create_event"] defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+        if (!error) {
+//            FBSession.activeSession = self.session;
+            [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/{609117719175838}"]
+                                         parameters:nil
+                                         HTTPMethod:@"DELETE"
+                                  completionHandler:^(
+                                                      FBRequestConnection *connection,
+                                                      id result,
+                                                      NSError *error
+                                                      ) {
+                                      /* handle the result */
+                                      
+                                      NSLog(@"%@ %@",result,error.description);
+                                  }];
+
+        }
+    }];
+
+}
 #pragma mark - Helper methods
 
 /**
@@ -1058,7 +1170,5 @@
         [self.delegate FacebookShareCompletewithResult:isSuccess];
     }
 }
-
-
 
 @end
