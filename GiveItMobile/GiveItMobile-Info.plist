@@ -5,11 +5,23 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Givitmobile</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>120</string>
+				<string>114</string>
+				<string>57</string>
+			</array>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.isis.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.isis.pushDev</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -17,13 +29,45 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb469312436494573</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.isis.SocialSample</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com-isis-giveit</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.1</string>
+	<key>FacebookAppID</key>
+	<string>469312436494573</string>
+	<key>FacebookDisplayName</key>
+	<string>GiveItMobile</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.business</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Droid Sans-BOLD.TTF</string>
+		<string>Droid Sans.TTF</string>
+	</array>
+	<key>UILaunchImageFile</key>
+	<string>Default</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -33,8 +77,17 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>YahooSettings</key>
+	<dict>
+		<key>AppID</key>
+		<string>c1Gvfa7k</string>
+		<key>CallbackURL</key>
+		<string>http://appproto.com/demos/giftitmobile/yahoo/yahoocallback.php</string>
+		<key>ConsumerKey</key>
+		<string>dj0yJmk9SFBNdWxwY0R5UERNJmQ9WVdrOVl6RkhkbVpoTjJzbWNHbzlNVGcxTmprMk1UTTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1hYg--</string>
+		<key>ConsumerSecretKey</key>
+		<string>92a564cdb5f0ebe4a0609af7e4f0879f69e5ba19</string>
+	</dict>
 </dict>
 </plist>

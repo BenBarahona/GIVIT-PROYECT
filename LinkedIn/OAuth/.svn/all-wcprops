@@ -1,0 +1,167 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth
+END
+OAServiceTicket.m
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAServiceTicket.m
+END
+OAPlaintextSignatureProvider.m
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAPlaintextSignatureProvider.m
+END
+OADataFetcher.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OADataFetcher.h
+END
+OAAtachmentF.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAAtachmentF.h
+END
+OACall.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OACall.h
+END
+OATokenManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OATokenManager.h
+END
+OAuthConsumer.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAuthConsumer.h
+END
+OADataFetcher.m
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OADataFetcher.m
+END
+OACall.m
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OACall.m
+END
+OAToken.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAToken.h
+END
+OATokenManager.m
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OATokenManager.m
+END
+OAHMAC_SHA1SignatureProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAHMAC_SHA1SignatureProvider.h
+END
+OASignatureProviding.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OASignatureProviding.h
+END
+OAMutableURLRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAMutableURLRequest.h
+END
+OAToken.m
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAToken.m
+END
+OAHMAC_SHA1SignatureProvider.m
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAHMAC_SHA1SignatureProvider.m
+END
+OAAttachment.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAAttachment.h
+END
+OARequestParameter.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OARequestParameter.h
+END
+OAMutableURLRequest.m
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAMutableURLRequest.m
+END
+OAConsumer.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAConsumer.h
+END
+OAAttachment.m
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAAttachment.m
+END
+OARequestParameter.m
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OARequestParameter.m
+END
+OAProblem.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAProblem.h
+END
+OAConsumer.m
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAConsumer.m
+END
+OAServiceTicket.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAServiceTicket.h
+END
+OAPlaintextSignatureProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAPlaintextSignatureProvider.h
+END
+OAProblem.m
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/PlayyIt/!svn/ver/2/Phase1/SourceCode/iOS/PlAYYIT/PlayyIt/LinkedIn/OAuth/OAProblem.m
+END
