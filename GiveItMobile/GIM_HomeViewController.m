@@ -37,7 +37,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     
 //    else{
-    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+    //self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     self.navigationItem.hidesBackButton = YES;
     NSArray *arr = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:@"myMessage"]];
     int count=0;
