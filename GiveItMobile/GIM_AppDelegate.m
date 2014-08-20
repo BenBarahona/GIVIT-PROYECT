@@ -73,8 +73,8 @@
                                                 nil];
     
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
-    [[UILabel appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:13]];
-    [[UITextField appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:13]];
+    [[UILabel appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:16]];
+    [[UITextField appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:16]];
     [[UITextView appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:12]];
 
     return YES;

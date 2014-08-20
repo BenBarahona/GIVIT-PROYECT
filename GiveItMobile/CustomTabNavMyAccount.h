@@ -10,4 +10,6 @@
 
 @interface CustomTabNavMyAccount : UINavigationController
 
+@property (nonatomic, assign) BOOL openSocialSync;
+@property (nonatomic, assign) BOOL openContactSync;
 @end
