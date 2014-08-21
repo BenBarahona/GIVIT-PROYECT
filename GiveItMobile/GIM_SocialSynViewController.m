@@ -543,8 +543,8 @@
     return [numericTest evaluateWithObject:candidate];
 }
 
--(void)customNavigationButton{
-    //self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+-(void)customNavigationButton
+{
     
     //create the button and assign the image
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -572,12 +572,16 @@
     self.navigationItem.rightBarButtonItem = customBarItem1;
 }
 
--(void)back{
+-(IBAction)back:(id)sender{
+    /*
+    NSLog(@"%@", [self.navigationController viewControllers]);
     [self.navigationController popViewControllerAnimated:YES];
-    
-}
+    NSLog(@"%@", [self.navigationController viewControllers]);
+    [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"%@", [self.navigationController viewControllers]);
+     */
+    //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
--(void)gotoHome{
     [self.navigationController popViewControllerAnimated:YES];
 }
 

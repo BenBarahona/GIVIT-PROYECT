@@ -84,6 +84,13 @@
 - (IBAction)inviteFriendsClicked:(id)sender
 {
     [self performSegueWithIdentifier:@"InviteFriends" sender:self];
+    /*
+    tabindex = 15;
+    [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%d",tabindex] forKey:@"TabIndex"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"myGiftCard" forKey:@"myGift"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self performSegueWithIdentifier:@"SegueToTabBar" sender:self];
+     */
 }
 
 - (IBAction)synchronizeContactsClicked:(id)sender
