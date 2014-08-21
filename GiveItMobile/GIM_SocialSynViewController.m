@@ -561,8 +561,8 @@
     button.frame = CGRectMake(0, 0, 30, 30);
     button1.frame = CGRectMake(0, 0, 30, 30);
     
-    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    [button1 addTarget:self action:@selector(gotoHome) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [button1 addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     
     //create a UIBarButtonItem with the button as a custom view
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];

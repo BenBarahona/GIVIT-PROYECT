@@ -227,15 +227,9 @@
     else if (_selectedIndex == 13 && [(GIM_UpcomingEvents *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_UpcomingEvents class]]) {
         [[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] performSegueWithIdentifier:@"segueCalander" sender:[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1]];
     }
-    else if (_selectedIndex == 15 && [(GIM_MyAccountViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_MyAccountViewController class]]) {
-        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"seguePerform" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
-    }
-    else if (_selectedIndex == 100 && [(GIM_GiveGiftCard_SelectContactViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_GiveGiftCard_SelectContactViewController class]]) {
-        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"SocialLogin" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
-    }
-    else if (_selectedIndex == 101 && [(GIM_GiveGiftCard_SelectContactViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_GiveGiftCard_SelectContactViewController class]])
+    else if (_selectedIndex == 15 && [(GIM_MyAccountViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_MyAccountViewController class]])
     {
-        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"SocialLogin" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
+        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"seguePerform" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
     }
 }
 
