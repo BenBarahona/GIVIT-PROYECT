@@ -65,17 +65,16 @@
             
         }
     }
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setBackgroundColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor blueColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{
-                                                           UITextAttributeTextColor: [UIColor blueColor],
-                                                           UITextAttributeTextShadowColor: [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8],
-                                                           UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)],
-                                                           /*UITextAttributeFont: [UIFont fontWithName:@"Droid Sans" size:13.0],*/
-                                                           }];
-    [[UILabel appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:13]];
-    [[UITextField appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:13]];
+    //[[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    //[[UINavigationBar appearance] setBackgroundColor:[UIColor blueColor]];
+
+    NSDictionary *navbarTitleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               [UIColor colorWithRed:65.0/255.0 green:144.0/255.0 blue:206.0/255.0 alpha:1.0],UITextAttributeTextColor,
+                                                nil];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
+    [[UILabel appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:16]];
+    [[UITextField appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:16]];
     [[UITextView appearance] setFont:[UIFont fontWithName:@"Droid Sans" size:12]];
 
     return YES;

@@ -463,6 +463,11 @@
         GIM_GiveGiftCard_SelectContactViewController *give = [segue destinationViewController];
         give.isHideContinue = YES;
     }
+    else if([[segue identifier] isEqualToString:@"SocialLogin"])
+    {
+        GIM_SocialSynViewController *social = [segue destinationViewController];
+        social.delegate = (id)self;
+    }
 }
 
 #pragma mark Validation

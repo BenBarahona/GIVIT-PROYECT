@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>689D760F-AB27-4212-BF48-8D5CCD04F4DF</string>
+	<key>IDESourceControlProjectName</key>
+	<string>GiveItMobile</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>730ED05F-46E5-43C2-B5FC-1481D814D6D9</key>
+		<string>https://github.com/ianortega7/GIVIT-PROYECT.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>GiveItMobile.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>730ED05F-46E5-43C2-B5FC-1481D814D6D9</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ianortega7/GIVIT-PROYECT.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>730ED05F-46E5-43C2-B5FC-1481D814D6D9</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>730ED05F-46E5-43C2-B5FC-1481D814D6D9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>GIVIT-PROYECT</string>
+		</dict>
+	</array>
+</dict>
+</plist>

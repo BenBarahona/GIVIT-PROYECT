@@ -37,7 +37,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     
 //    else{
-    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+    //self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     self.navigationItem.hidesBackButton = YES;
     NSArray *arr = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] valueForKey:@"myMessage"]];
     int count=0;
@@ -48,7 +48,7 @@
     }
     _countMessageLabel.text = [NSString stringWithFormat:@"%d",count];
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     GIM_UserModel *userModel = [[GIM_UserModel alloc]init];
     userModel.newuserid = [[NSUserDefaults standardUserDefaults] valueForKey:@"UserID"];
@@ -67,8 +67,8 @@
 
 }
 -(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,6 +80,27 @@
 
 #pragma mark IBAction Methods
 #pragma mark -------------------------------------------
+
+- (IBAction)inviteFriendsClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"InviteFriends" sender:self];
+    /*
+    tabindex = 15;
+    [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%d",tabindex] forKey:@"TabIndex"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"myGiftCard" forKey:@"myGift"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self performSegueWithIdentifier:@"SegueToTabBar" sender:self];
+     */
+}
+
+- (IBAction)synchronizeContactsClicked:(id)sender
+{
+    tabindex = 101;
+    [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%d",tabindex] forKey:@"TabIndex"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"myGiftCard" forKey:@"myGift"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self performSegueWithIdentifier:@"SegueToTabBar" sender:self];
+}
 
 
 - (IBAction)btn_GiftCardOfTheDay:(id)sender {

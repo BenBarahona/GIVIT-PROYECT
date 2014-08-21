@@ -70,4 +70,7 @@
                                                    UINavigationControllerDelegate>) delegate;
 - (void)video: (NSString *) videoPath didFinishSavingWithError: (NSError *) error contextInfo:(void*)contextInfo;
 
+-(void) openSynchContacts;
+- (void) openInviteFriends;
+
 @end

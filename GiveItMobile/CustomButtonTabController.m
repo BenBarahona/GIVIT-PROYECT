@@ -66,6 +66,14 @@
         case 15:
             [_mNavigationView bringSubviewToFront:myAccountNavigation.view];
             break;
+        case 100:
+            [_mNavigationView bringSubviewToFront:myAccountNavigation.view];
+            [self openInviteFriends];
+            break;
+        case 101:
+            [self openSynchContacts];
+            [_mNavigationView bringSubviewToFront:myAccountNavigation.view];
+            break;
             
         default:
             break;
@@ -133,6 +141,20 @@
     [_mNavigationView bringSubviewToFront:myAccountNavigation.view];
 }
 
+- (IBAction)didTapInviteFriends:(id)sender {
+    _selectedIndex = [sender tag];
+    [self changeButtonImage];
+    _mHeaderTitleLabel.text = @"Social Sync";
+    [_mNavigationView bringSubviewToFront:myAccountNavigation.view];
+}
+
+- (IBAction)didTapSynchContacts:(id)sender {
+    _selectedIndex = [sender tag];
+    [self changeButtonImage];
+    _mHeaderTitleLabel.text = @"Social Sync";
+    [_mNavigationView bringSubviewToFront:myAccountNavigation.view];
+}
+
 - (IBAction)didTapBackButton:(id)sender {
     switch (_selectedIndex) {
         case 10:{
@@ -175,7 +197,9 @@
             }
         }
             break;
-        case 15:{
+        case 15:
+        case 100:
+        case 101:{
             if ([[myAccountNavigation viewControllers] count]>1) {
                 [myAccountNavigation popViewControllerAnimated:YES];
             } else {
@@ -183,6 +207,7 @@
             }
         }
             break;
+            
         default:
             break;
     }
@@ -202,11 +227,9 @@
     else if (_selectedIndex == 13 && [(GIM_UpcomingEvents *)[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] isKindOfClass:[GIM_UpcomingEvents class]]) {
         [[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1] performSegueWithIdentifier:@"segueCalander" sender:[[eventNavigation viewControllers] objectAtIndex:[[eventNavigation viewControllers] count]-1]];
     }
-    else if (_selectedIndex == 15 && [(GIM_MyAccountViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_MyAccountViewController class]]) {
+    else if (_selectedIndex == 15 && [(GIM_MyAccountViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_MyAccountViewController class]])
+    {
         [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"seguePerform" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
-    }
-    else if (_selectedIndex == 15 && [(GIM_GiveGiftCard_SelectContactViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_GiveGiftCard_SelectContactViewController class]]) {
-        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"SocialLogin" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
     }
 }
 
@@ -524,6 +547,21 @@
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
+}
+
+- (void) openInviteFriends
+{
+    NSLog(@"CLASS: %@", [(GIM_GiveGiftCard_SelectContactViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] class]);
+    if (_selectedIndex == 100 && [(GIM_GiveGiftCard_SelectContactViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_MyAccountViewController class]]) {
+        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"seguePerform" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
+    }
+}
+
+-(void) openSynchContacts
+{
+    if (_selectedIndex == 101 && [(GIM_GiveGiftCard_SelectContactViewController *)[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] isKindOfClass:[GIM_GiveGiftCard_SelectContactViewController class]]) {
+        [[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1] performSegueWithIdentifier:@"SocialLogin" sender:[[myAccountNavigation viewControllers] objectAtIndex:[[myAccountNavigation viewControllers] count]-1]];
+    }
 }
 
 @end
