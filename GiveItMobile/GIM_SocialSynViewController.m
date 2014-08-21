@@ -30,7 +30,8 @@
 {
     [super viewDidLoad];
     _mGmailLoginView.hidden = YES;
-    [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO];
+    [self customNavigationButton];
     [self setValue:[UIFont fontWithName:@"Droid Sans" size:16] forKeyPath:@"button.font"];
 	// Do any additional setup after loading the view.
 }
@@ -51,6 +52,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:YES];
     GIM_AppDelegate *appD = (GIM_AppDelegate*)[[UIApplication sharedApplication] delegate];
     CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[appD.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[appD.window rootViewController] viewControllers] count]-1];
     if ([tabHome isKindOfClass:[CustomButtonTabController class]]) {
@@ -541,5 +543,42 @@
     return [numericTest evaluateWithObject:candidate];
 }
 
+-(void)customNavigationButton{
+    //self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+    
+    //create the button and assign the image
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"btn_next_arrow_01.png"] forState:UIControlStateNormal];
+    //[button setImage:[UIImage imageNamed:@"btn_next_arrow_02.png"] forState:UIControlStateHighlighted];
+    button.adjustsImageWhenDisabled = NO;
+    
+    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button1 setImage:[UIImage imageNamed:@"btn_home_01.png"] forState:UIControlStateNormal];
+    //[button1 setImage:[UIImage imageNamed:@"btn_home_02.png"] forState:UIControlStateHighlighted];
+    button1.adjustsImageWhenDisabled = NO;
+    
+    //set the frame of the button to the size of the image (see note below)
+    button.frame = CGRectMake(0, 0, 30, 30);
+    button1.frame = CGRectMake(0, 0, 30, 30);
+    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [button1 addTarget:self action:@selector(gotoHome) forControlEvents:UIControlEventTouchUpInside];
+    
+    //create a UIBarButtonItem with the button as a custom view
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIBarButtonItem *customBarItem1 = [[UIBarButtonItem alloc] initWithCustomView:button1];
+    self.navigationItem.leftBarButtonItem = customBarItem;
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.rightBarButtonItem = customBarItem1;
+}
+
+-(void)back{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+-(void)gotoHome{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end
