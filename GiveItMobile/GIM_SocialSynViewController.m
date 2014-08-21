@@ -98,8 +98,6 @@
 //    }
     [[FbMethods sharedManager] setDelegate:(id)self];
     [[FbMethods sharedManager] getFacebookFriendListwithDetail];
-    
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 -(void)FacebookFriendList:(NSArray *)friendDetails withSuccess:(BOOL)isSuccess{
@@ -109,6 +107,7 @@
         [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
         syncType = @"FBContacts";
         [self.view setUserInteractionEnabled:YES];
+        [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
     }
 }
 
@@ -128,7 +127,6 @@
     else{
         [self addressBookLoader];
     }
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 -(void)didTapToFetchLinkedInContacts:(id)sender{
@@ -174,16 +172,16 @@
     syncType = @"LinkedInContacts";
     [[NSUserDefaults standardUserDefaults] setValue:friend forKey:@"LinkedInContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [self.view setUserInteractionEnabled:YES];}
+    [self.view setUserInteractionEnabled:YES];
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+}
 
 - (IBAction)didTapToFetchYahooContact:(id)sender {
     [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:@selector(LoginDidFail:)];
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (IBAction)didTapToFetchGmailContacts:(id)sender {
     _mGmailLoginView.hidden = NO;
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (IBAction)didTapToSignInGmail:(id)sender {
@@ -207,7 +205,6 @@
         GmailSync *gmail = [[GmailSync alloc] init];
         [gmail checkLogin:value FetchContact:YES];
         gmail.delegate = (id)self;
-        [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
     }
 }
 
@@ -228,6 +225,7 @@
     [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
     syncType = @"GmailContacts";
     [self.view setUserInteractionEnabled:YES];
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 -(void)didGmailSignInError : (NSString *)error{
     [self showMessage:@"EmailID Password not match" withTitle:@"Welcome!"];
@@ -301,6 +299,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:arrayofContacts forKey:@"LocalContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.view setUserInteractionEnabled:YES];
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 
@@ -371,6 +370,7 @@
     syncType = @"YahooContacts";
     [[NSUserDefaults standardUserDefaults] setValue:yahooContact forKey:@"YahooContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (void)GetUserContactListDidFail:(NSDictionary *)data{
