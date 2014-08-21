@@ -75,7 +75,7 @@
 
 
 - (IBAction)didTapToFacebookLoggin:(id)sender {
-    [self.view setUserInteractionEnabled:NO];
+    //[self.view setUserInteractionEnabled:NO];
 //    if (FBSession.activeSession.state == FBSessionStateOpen
 //        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
 //        
@@ -98,7 +98,8 @@
 //    }
     [[FbMethods sharedManager] setDelegate:(id)self];
     [[FbMethods sharedManager] getFacebookFriendListwithDetail];
-
+    
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 -(void)FacebookFriendList:(NSArray *)friendDetails withSuccess:(BOOL)isSuccess{
@@ -112,7 +113,7 @@
 }
 
 - (IBAction)didTapToFetchLocalContacts:(id)sender {
-    [self.view setUserInteractionEnabled:NO];
+    //[self.view setUserInteractionEnabled:NO];
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
         ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
@@ -127,7 +128,7 @@
     else{
         [self addressBookLoader];
     }
-    
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 -(void)didTapToFetchLinkedInContacts:(id)sender{
@@ -177,10 +178,12 @@
 
 - (IBAction)didTapToFetchYahooContact:(id)sender {
     [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:@selector(LoginDidFail:)];
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (IBAction)didTapToFetchGmailContacts:(id)sender {
     _mGmailLoginView.hidden = NO;
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (IBAction)didTapToSignInGmail:(id)sender {
@@ -199,11 +202,12 @@
         return;
     }
     else{
-        [self.view setUserInteractionEnabled:NO];
+        //[self.view setUserInteractionEnabled:NO];
         NSDictionary *value = [[NSDictionary alloc] initWithObjectsAndKeys:_mGmailIdTextField.text,@"userID",_mGmailPasswordTextField.text,@"password",nil];
         GmailSync *gmail = [[GmailSync alloc] init];
         [gmail checkLogin:value FetchContact:YES];
         gmail.delegate = (id)self;
+        [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
     }
 }
 
@@ -396,7 +400,7 @@
     if (!error && state == FBSessionStateOpen){
         NSLog(@"Session opened");
         // Show the user the logged-in UI
-        [self.view setUserInteractionEnabled:NO];
+        //[self.view setUserInteractionEnabled:NO];
         [self userLoggedIn];
         return;
     }

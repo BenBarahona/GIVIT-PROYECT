@@ -58,16 +58,18 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.title = @"";
     self.navigationController.title = @"Buy Gift Cards";
     if (_isHideContinue == YES) {
         self.navigationController.title = @"All Contacts";
    }
-    GIM_AppDelegate *appD = (GIM_AppDelegate*)[[UIApplication sharedApplication] delegate];
-    CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[appD.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[appD.window rootViewController] viewControllers] count]-1];
-    [tabHome setHeaderTitleLabelText:self.navigationController];
-    [tabHome setHiddenOnOffExtraButton:_isHideContinue];
-    _mContinueButton.hidden = _isHideContinue;
+    //GIM_AppDelegate *appD = (GIM_AppDelegate*)[[UIApplication sharedApplication] delegate];
+    //CustomButtonTabController *tabHome = (CustomButtonTabController *)[[(UINavigationController *)[appD.window rootViewController] viewControllers] objectAtIndex:[[(UINavigationController *)[appD.window rootViewController] viewControllers] count]-1];
     
+    //[tabHome setHeaderTitleLabelText:self.navigationController];
+    //[tabHome setHiddenOnOffExtraButton:_isHideContinue];
+    _mContinueButton.hidden = _isHideContinue;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 
@@ -229,7 +231,9 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *info = [[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row];
+    /*
     if ([[[selectArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
         NSMutableArray *arr =[NSMutableArray arrayWithArray:[selectArray objectAtIndex:indexPath.section]];
         [arr replaceObjectAtIndex:indexPath.row withObject:@"yes"];
@@ -242,6 +246,8 @@
     }
     [_sendGiftTableView reloadData];
     isChange = NO;
+     */
+    
 }
 
 #pragma mark GIM_UserServiceDelegate
