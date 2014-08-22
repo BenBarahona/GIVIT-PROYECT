@@ -95,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "420"
             endingLineNumber = "420"
-            landmarkName = "-prepareForSegue:sender:"
+            landmarkName = "-didTapToSocialSync:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -111,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "421"
             endingLineNumber = "421"
-            landmarkName = "-prepareForSegue:sender:"
+            landmarkName = "-didTapToSocialSync:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

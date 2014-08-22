@@ -159,6 +159,10 @@
 		0CEC7C9718696E2D00F7A7F7 /* no_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0CEC7C9618696E2D00F7A7F7 /* no_image.jpg */; };
 		0CF203D21876940100DFE5D6 /* GIM_NavControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF203D11876940100DFE5D6 /* GIM_NavControllerViewController.m */; };
 		0CF2FE3B18850A8200E04233 /* Droid Sans.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 0CF2FE3A18850A8200E04233 /* Droid Sans.TTF */; };
+		3D5803F019A712A900F07751 /* box_reedem2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5803EF19A712A900F07751 /* box_reedem2.png */; };
+		3D5803F119A712A900F07751 /* box_reedem2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5803EF19A712A900F07751 /* box_reedem2.png */; };
+		3D5803F319A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5803F219A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png */; };
+		3D5803F419A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5803F219A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png */; };
 		490D5BD319A463F600E29612 /* btn_buygiftcards_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 490D5BCF19A463F600E29612 /* btn_buygiftcards_01@2x.png */; };
 		490D5BD419A463F600E29612 /* btn_myac_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 490D5BD019A463F600E29612 /* btn_myac_01@2x.png */; };
 		490D5BD519A463F600E29612 /* btn_myevents_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 490D5BD119A463F600E29612 /* btn_myevents_01@2x.png */; };
@@ -696,6 +700,8 @@
 		0CF203D01876940100DFE5D6 /* GIM_NavControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIM_NavControllerViewController.h; sourceTree = "<group>"; };
 		0CF203D11876940100DFE5D6 /* GIM_NavControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIM_NavControllerViewController.m; sourceTree = "<group>"; };
 		0CF2FE3A18850A8200E04233 /* Droid Sans.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Droid Sans.TTF"; sourceTree = "<group>"; };
+		3D5803EF19A712A900F07751 /* box_reedem2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = box_reedem2.png; path = iphone_5.0/how_to_reedem/box_reedem2.png; sourceTree = "<group>"; };
+		3D5803F219A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png"; sourceTree = "<group>"; };
 		490D5BCF19A463F600E29612 /* btn_buygiftcards_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_buygiftcards_01@2x.png"; sourceTree = "<group>"; };
 		490D5BD019A463F600E29612 /* btn_myac_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_myac_01@2x.png"; sourceTree = "<group>"; };
 		490D5BD119A463F600E29612 /* btn_myevents_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_myevents_01@2x.png"; sourceTree = "<group>"; };
@@ -2599,6 +2605,7 @@
 				490D5BE519A47D7400E29612 /* home_offers.png */,
 				490D5BE619A47D7400E29612 /* home_offers@2x.png */,
 				490D5BE719A47D7400E29612 /* home_synch.png */,
+				3D5803F219A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png */,
 				490D5BE819A47D7400E29612 /* home_synch@2x.png */,
 				490D5BD719A4773D00E29612 /* calendaricontop.png */,
 				490D5BD819A4773D00E29612 /* calendaricontop@2x.png */,
@@ -2632,6 +2639,7 @@
 				0C2311E518EA883D009DE19E /* btn_appevents_02.png */,
 				0C2311E618EA883D009DE19E /* btn_event_delete_01.png */,
 				0C2311E718EA883D009DE19E /* btn_event_delete_02.png */,
+				3D5803EF19A712A900F07751 /* box_reedem2.png */,
 				0C2311E818EA883D009DE19E /* btn_fevents_01.png */,
 				0C2311E918EA883D009DE19E /* btn_fevents_02.png */,
 				0C2311EA18EA883D009DE19E /* btn_gevents_01.png */,
@@ -2718,6 +2726,7 @@
 		C3F247451862D87D002D7762 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9D495B4119A68C6F006A687E /* MessageUI.framework */,
 				9D495B4119A68C6F006A687E /* MessageUI.framework */,
 				C322677B18E4147C00F572DE /* Gdata */,
 				C322675F18E4142500F572DE /* FacebookSDK.framework */,
@@ -3033,6 +3042,7 @@
 				C3639FF6186303CD002AA3F2 /* btn_arrow_02.png in Resources */,
 				0C8EF70918B35BE700B73A54 /* Main.storyboard in Resources */,
 				C3639FF7186303CD002AA3F2 /* btn_sync_001.png in Resources */,
+				3D5803F319A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png in Resources */,
 				C3639FF8186303CD002AA3F2 /* btn_sync_02.png in Resources */,
 				C3639FF9186303CD002AA3F2 /* calender_bg.png in Resources */,
 				C3639FFA186303CD002AA3F2 /* date_selected.png in Resources */,
@@ -3272,6 +3282,7 @@
 				9D495B3D19A6871A006A687E /* btn_user_01@2x.png in Resources */,
 				490D5BDE19A4773E00E29612 /* calendaricontop@2x.png in Resources */,
 				C363A09E186303CD002AA3F2 /* thank_u_bg.png in Resources */,
+				3D5803F019A712A900F07751 /* box_reedem2.png in Resources */,
 				0C8E05AD18B3924A00B73A54 /* btn_date_01.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3281,6 +3292,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3F247701862D87E002D7762 /* InfoPlist.strings in Resources */,
+				3D5803F119A712A900F07751 /* box_reedem2.png in Resources */,
+				3D5803F419A714D700F07751 /* YOUR-GIFT-HAS-BEEN-SENT-SUCCESSFULLY.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
