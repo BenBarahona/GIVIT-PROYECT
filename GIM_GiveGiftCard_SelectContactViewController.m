@@ -248,24 +248,10 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSDictionary *info = [[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row];
     NSLog(@"SELECTED: %@", info);
-    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-	if([MFMessageComposeViewController canSendText])
-	{
-		controller.messageComposeDelegate = self;
-            controller.body = @"";
-        
-        [self presentViewController:controller animated:YES completion:^{
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-        }];
-	}
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"GivIt" message:@"This device cannot send SMS messages" delegate:nil cancelButtonTitle:@"Continue" otherButtonTitles: nil];
-        [alert show];
-    }
     /*
     NSDictionary *info = [[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row];
     NSLog(@"SELECTED: %@", info);
@@ -348,7 +334,7 @@
         }
         else
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Please select at least one contact to send gift card" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"This device is not setup to send email messages" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }
         
@@ -381,6 +367,15 @@
     }
 }
 
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    if(result == MFMailComposeResultSent)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You message has been sent!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+}
 
 - (IBAction)didTapToSocialSync:(id)sender {
     isChange = YES;

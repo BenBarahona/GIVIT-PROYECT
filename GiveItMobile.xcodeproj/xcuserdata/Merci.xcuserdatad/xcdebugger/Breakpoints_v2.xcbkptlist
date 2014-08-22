@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GIM_GiveGiftCard_SelectContactViewController.m"
-            timestampString = "430384522.507895"
+            timestampString = "430392288.52404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
+            startingLineNumber = "415"
+            endingLineNumber = "415"
             landmarkName = "-didTapToSocialSync:"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GIM_GiveGiftCard_SelectContactViewController.m"
-            timestampString = "430384522.507895"
+            timestampString = "430392288.52404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
             landmarkName = "-didTapToSocialSync:"
             landmarkType = "5">
          </BreakpointContent>
