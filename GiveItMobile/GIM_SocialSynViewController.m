@@ -14,7 +14,7 @@
 
 @implementation GIM_SocialSynViewController
 @synthesize sessionYahoo;
-@synthesize oauthResponse;
+@synthesize oauthResponse, selectedOption;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -107,7 +107,7 @@
         [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
         syncType = @"FBContacts";
         [self.view setUserInteractionEnabled:YES];
-        [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+        [self pushVCWithOption:SYNC_FACEBOOK];
     }
 }
 
@@ -173,7 +173,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:friend forKey:@"LinkedInContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.view setUserInteractionEnabled:YES];
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+    [self pushVCWithOption:SYNC_LINKEDIN];
 }
 
 - (IBAction)didTapToFetchYahooContact:(id)sender {
@@ -225,7 +225,7 @@
     [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
     syncType = @"GmailContacts";
     [self.view setUserInteractionEnabled:YES];
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+    [self pushVCWithOption:SYNC_GMAIL];
 }
 -(void)didGmailSignInError : (NSString *)error{
     [self showMessage:@"EmailID Password not match" withTitle:@"Welcome!"];
@@ -299,7 +299,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:arrayofContacts forKey:@"LocalContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.view setUserInteractionEnabled:YES];
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+    [self pushVCWithOption:SYNC_CONTACTS];
 }
 
 
@@ -370,7 +370,7 @@
     syncType = @"YahooContacts";
     [[NSUserDefaults standardUserDefaults] setValue:yahooContact forKey:@"YahooContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+    [self pushVCWithOption:SYNC_YAHOO];
 }
 
 - (void)GetUserContactListDidFail:(NSDictionary *)data{
@@ -587,6 +587,12 @@
     //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void) pushVCWithOption:(enum SYNC_OPTIONS)option
+{
+    self.selectedOption = option;
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 @end

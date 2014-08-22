@@ -55,7 +55,12 @@
     }
 	// Do any additional setup after loading the view.
     
-    UIViewController *vc = self.navigationController.viewControllers objectAtIndex:<#(NSUInteger)#>;
+    NSInteger index = self.navigationController.viewControllers.count - 2;
+    UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:index];
+    if([vc isKindOfClass:[GIM_SocialSynViewController class]])
+    {
+        self.isInviteContacts = YES;
+    }
     
 }
 
@@ -410,6 +415,7 @@
     if([[segue identifier] isEqualToString:@"SocialLogin"]){
         GIM_SocialSynViewController *social = [segue destinationViewController];
         social.delegate = (id)self;
+        social.
     }
     else if ([[segue identifier] isEqualToString:@"didUploadBuyGift"]){
         GIM_BuyGiftCardUploadViewController *upload = [segue destinationViewController];

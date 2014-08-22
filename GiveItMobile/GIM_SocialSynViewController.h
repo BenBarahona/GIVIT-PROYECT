@@ -14,6 +14,15 @@
 #import "YOSSession.h"
 #import "YOSRequestClient.h"
 #import "LinkedINAPIFunction.h"
+
+enum SYNC_OPTIONS
+{
+    SYNC_FACEBOOK,
+    SYNC_LINKEDIN,
+    SYNC_GMAIL,
+    SYNC_YAHOO,
+    SYNC_CONTACTS
+};
 @protocol socialLoginDelegate <NSObject>
 
 @optional
@@ -31,6 +40,8 @@
 @property (strong, nonatomic) IBOutlet UITextField *mGmailIdTextField;
 @property (strong, nonatomic) IBOutlet UITextField *mGmailPasswordTextField;
 @property (strong, nonatomic) IBOutlet UIView *mGmailLoginView;
+
+@property (nonatomic, assign) enum SYNC_OPTIONS selectedOption;
 
 - (IBAction)btnContinue:(id)sender;
 - (IBAction)didTapToFacebookLoggin:(id)sender;
