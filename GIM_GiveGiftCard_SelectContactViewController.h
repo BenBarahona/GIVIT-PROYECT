@@ -38,7 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *mContinueButton;
 @property (weak, nonatomic) IBOutlet UIButton *mLinkedInButton;
 
-
+@property (nonatomic, assign) BOOL isInviteContacts;
 
 - (IBAction)didTapToContinue:(id)sender;
 - (IBAction)didTapToSocialSync:(id)sender;

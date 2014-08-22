@@ -54,6 +54,9 @@
         [_sendGiftTableView setFrame:rect];
     }
 	// Do any additional setup after loading the view.
+    
+    UIViewController *vc = self.navigationController.viewControllers objectAtIndex:<#(NSUInteger)#>;
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -69,7 +72,10 @@
     //[tabHome setHeaderTitleLabelText:self.navigationController];
     //[tabHome setHiddenOnOffExtraButton:_isHideContinue];
     _mContinueButton.hidden = _isHideContinue;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    
+    
+    [self.navigationController setNavigationBarHidden:!self.isInviteContacts animated:NO];
 }
 
 
@@ -231,7 +237,9 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    /*
     NSDictionary *info = [[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row];
     NSLog(@"SELECTED: %@", info);
     
@@ -265,8 +273,8 @@
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         [MRProgressOverlayView dismissOverlayForView:self animated:YES];
     }];
+    */
     
-    /*
     if ([[[selectArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
         NSMutableArray *arr =[NSMutableArray arrayWithArray:[selectArray objectAtIndex:indexPath.section]];
         [arr replaceObjectAtIndex:indexPath.row withObject:@"yes"];
@@ -279,7 +287,6 @@
     }
     [_sendGiftTableView reloadData];
     isChange = NO;
-     */
     
 }
 

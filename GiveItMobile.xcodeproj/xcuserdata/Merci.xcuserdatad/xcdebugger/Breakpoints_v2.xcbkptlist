@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GiveItMobile/GIM_SocialSynViewController.m"
-            timestampString = "430292562.23084"
+            timestampString = "430381243.350662"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "-btnContinue:"
             landmarkType = "5">
          </BreakpointContent>
