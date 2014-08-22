@@ -68,6 +68,8 @@
     
     self.sendGiftTableView.sectionIndexTrackingBackgroundColor = [UIColor lightGrayColor];
     self.sendGiftTableView.sectionIndexBackgroundColor = [UIColor lightGrayColor];
+    
+    _paymentDict = [[NSMutableDictionary alloc] init];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -320,17 +322,41 @@
     {
         if([MFMailComposeViewController canSendMail])
         {
-            NSString *emailCaption = @"";
+            NSMutableArray *emails = [[NSMutableArray alloc] init];
             
-            MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
-            mailViewController.mailComposeDelegate = self;
-            
-            [mailViewController setSubject:@""];
-            [mailViewController setMessageBody:emailCaption isHTML:YES];
-            
-            [self.navigationController presentViewController:mailViewController animated:YES completion:^{
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-            }];
+            NSString *email = @"";
+            for (int i=0; i<selectArray.count; i++) {
+                for (int j=0; j<[[selectArray objectAtIndex:i] count]; j++) {
+                    if ([[[selectArray objectAtIndex:i] objectAtIndex:j]isEqualToString:@"yes"]) {
+                        email = [NSString stringWithFormat:@"%@",[[[[contactDetail objectAtIndex:i] valueForKey:@"Objects"] objectAtIndex:j]valueForKey:@"username"]];
+                        
+                        if(selectedIndex == 2)
+                        {
+                            email = [email stringByAppendingString:@"@facebook.com"];
+                        }
+                        [emails addObject:email];
+                    }
+                }
+            }
+            if (emails.count >0) {
+                
+                NSString *emailCaption = @"";
+                
+                MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+                mailViewController.mailComposeDelegate = self;
+                [mailViewController setToRecipients:emails];
+                [mailViewController setSubject:@"GiveIt Invitation"];
+                [mailViewController setMessageBody:emailCaption isHTML:YES];
+                
+                [self.navigationController presentViewController:mailViewController animated:YES completion:^{
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                }];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"Please select at least one contact to send an invitation" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            }
         }
         else
         {
@@ -384,6 +410,7 @@
     [_mGmailButton setImage:[UIImage imageNamed:@"btn_mail_01.png"] forState:UIControlStateNormal];
     [_mLinkedInButton setImage:[UIImage imageNamed:@"btn_in_01.png"] forState:UIControlStateNormal];
     [_mYahooButton setImage:[UIImage imageNamed:@"btn_yahoo_0001.png"] forState:UIControlStateNormal];
+    selectedIndex = [(UIButton *)sender tag];
     switch ([(UIButton *)sender tag]) {
         case 1:{
             [_mContactsButton setImage:[UIImage imageNamed:@"btn_user_02.png"] forState:UIControlStateNormal];

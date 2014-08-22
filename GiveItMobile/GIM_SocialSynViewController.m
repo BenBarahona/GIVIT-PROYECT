@@ -143,7 +143,9 @@
 }
 
 
--(void)LinkedINFriendList:(NSDictionary *)friendDetails{
+-(void)LinkedINFriendList:(NSDictionary *)friendDetails
+{
+    //NSLog(@"LINKEDIN: %@", friendDetails);
     NSMutableArray *friend = [[NSMutableArray alloc] init];
     for (int i = 0 ; i < [[friendDetails valueForKey:@"_total"] intValue]; i++) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];

@@ -24,6 +24,8 @@
     NSMutableArray *demoArray;
     BOOL isChange;
     NSString *contactType;
+    
+    NSInteger selectedIndex;
 }
 @property BOOL isHideContinue;
 @property (nonatomic,strong) UILocalizedIndexedCollation  *collation;

@@ -324,6 +324,7 @@
 
         NSString *LnAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"LnAccessToken"];
         
+        
         OAConsumer *_consumer = [[OAConsumer alloc] initWithKey:self.apikey
                                                          secret:self.secretkey
                                                           realm:@"https://api.linkedin.com/"];
