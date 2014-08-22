@@ -234,21 +234,38 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *info = [[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row];
     NSLog(@"SELECTED: %@", info);
-    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-	if([MFMessageComposeViewController canSendText])
-	{
-		controller.messageComposeDelegate = self;
-            controller.body = @"";
-        
-        [self presentViewController:controller animated:YES completion:^{
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-        }];
-	}
-    else
+    
+    if (![MFMailComposeViewController canSendMail])
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"GivIt" message:@"This device cannot send SMS messages" delegate:nil cancelButtonTitle:@"Continue" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"GivIt" message:@"This device cannot send email messages" delegate:nil cancelButtonTitle:@"Continue" otherButtonTitles: nil];
         [alert show];
+        return;
     }
+    
+    NSString *emailCaption = @"";
+    
+    MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+    mailViewController.mailComposeDelegate = self;
+    if(self.imageToShare != nil)
+    {
+        NSData *myData = [Util getNSDataFromImage:self.imageToShare isPNG:NO];
+        [mailViewController addAttachmentData:myData mimeType:@"image.png" fileName:@"Picture.png"];
+    }
+    
+    if(self.urlToShare){
+        emailCaption = [NSString stringWithFormat:@"made with #kamio %@",urlToShare];
+    }else{
+        emailCaption = @"made with #kamio";
+    }
+    
+    [mailViewController setSubject:@""];
+    [mailViewController setMessageBody:emailCaption isHTML:YES];
+    
+    [self.parentVC presentViewController:mailViewController animated:YES completion:^{
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        [MRProgressOverlayView dismissOverlayForView:self animated:YES];
+    }];
+    
     /*
     if ([[[selectArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
         NSMutableArray *arr =[NSMutableArray arrayWithArray:[selectArray objectAtIndex:indexPath.section]];
@@ -537,7 +554,10 @@
     }
     NSMutableArray *totalName = [[NSMutableArray alloc] init];
     for (int i=0; i<contactDetail.count; i++) {
-        [totalName addObject:[[contactDetail objectAtIndex:i] valueForKey:@"name"]];
+        if([[contactDetail objectAtIndex:i] valueForKey:@"name"] != nil)
+        {
+            [totalName addObject:[[contactDetail objectAtIndex:i] valueForKey:@"name"]];
+        }
     }
     demoArray = [[NSMutableArray alloc] init];
     NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];

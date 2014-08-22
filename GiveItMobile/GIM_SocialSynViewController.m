@@ -178,12 +178,10 @@
 
 - (IBAction)didTapToFetchYahooContact:(id)sender {
     [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:@selector(LoginDidFail:)];
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (IBAction)didTapToFetchGmailContacts:(id)sender {
     _mGmailLoginView.hidden = NO;
-    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
 - (IBAction)didTapToSignInGmail:(id)sender {
@@ -207,7 +205,6 @@
         GmailSync *gmail = [[GmailSync alloc] init];
         [gmail checkLogin:value FetchContact:YES];
         gmail.delegate = (id)self;
-        [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
     }
 }
 

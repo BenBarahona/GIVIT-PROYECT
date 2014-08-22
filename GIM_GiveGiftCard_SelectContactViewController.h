@@ -19,7 +19,7 @@
 #import "GIM_GiveGiftCard_SelectContactViewController.h"
 #import <MessageUI/MessageUI.h>
 
-@interface GIM_GiveGiftCard_SelectContactViewController : UIViewController<UIAlertViewDelegate,socialLoginDelegate,newContactAddProtocol,UITableViewDataSource,UITableViewDelegate, MFMessageComposeViewControllerDelegate >{
+@interface GIM_GiveGiftCard_SelectContactViewController : UIViewController<UIAlertViewDelegate,socialLoginDelegate,newContactAddProtocol,UITableViewDataSource,UITableViewDelegate, MFMailComposeViewControllerDelegate >{
     NSMutableArray *contactDetail,*selectArray,*totalContact;
     NSMutableArray *demoArray;
     BOOL isChange;
