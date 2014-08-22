@@ -177,6 +177,7 @@
 		490D5BEE19A47D7400E29612 /* home_synch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 490D5BE819A47D7400E29612 /* home_synch@2x.png */; };
 		490D5BF119A5C8BC00E29612 /* icon_contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 490D5BEF19A5C8BC00E29612 /* icon_contacts.png */; };
 		490D5BF219A5C8BC00E29612 /* icon_contacts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 490D5BF019A5C8BC00E29612 /* icon_contacts@2x.png */; };
+		490D5BF519A7225600E29612 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 490D5BF419A7225600E29612 /* MBProgressHUD.m */; };
 		49EF4BE619A331FB001BEEC4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EF4BE319A331FB001BEEC4 /* Default-568h@2x.png */; };
 		49EF4BE719A331FB001BEEC4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EF4BE419A331FB001BEEC4 /* Default.png */; };
 		49EF4BE819A331FB001BEEC4 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EF4BE519A331FB001BEEC4 /* Default@2x.png */; };
@@ -713,6 +714,8 @@
 		490D5BE819A47D7400E29612 /* home_synch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_synch@2x.png"; sourceTree = "<group>"; };
 		490D5BEF19A5C8BC00E29612 /* icon_contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_contacts.png; sourceTree = "<group>"; };
 		490D5BF019A5C8BC00E29612 /* icon_contacts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_contacts@2x.png"; sourceTree = "<group>"; };
+		490D5BF319A7225600E29612 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		490D5BF419A7225600E29612 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		49EF4BE319A331FB001BEEC4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		49EF4BE419A331FB001BEEC4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		49EF4BE519A331FB001BEEC4 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -2564,6 +2567,8 @@
 		C39EBFE7186462F200A8C409 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				490D5BF319A7225600E29612 /* MBProgressHUD.h */,
+				490D5BF419A7225600E29612 /* MBProgressHUD.m */,
 				0CD4C0A318DC3BAA0078DC24 /* LinkedINAPIFunction.m */,
 				0CD4C0A418DC3BAA0078DC24 /* LinkedINAPIFunction.h */,
 				0C8EF7C618B3605100B73A54 /* HTML convrsn */,
@@ -3325,6 +3330,7 @@
 				0C8EF7C118B3601100B73A54 /* YOSUser.m in Sources */,
 				0C8EF74618B35E3B00B73A54 /* GIM_MyGiftCardDetailsViewController.m in Sources */,
 				0C8EF71B18B35C4600B73A54 /* GIM_MyAccountViewController.m in Sources */,
+				490D5BF519A7225600E29612 /* MBProgressHUD.m in Sources */,
 				0C8EF7BD18B3601100B73A54 /* YOSRequestToken.m in Sources */,
 				0C8EF72118B35C6500B73A54 /* GIM_MyMessageCell.m in Sources */,
 				0C8EF7AF18B3601100B73A54 /* NSData+OAuthResponse.m in Sources */,

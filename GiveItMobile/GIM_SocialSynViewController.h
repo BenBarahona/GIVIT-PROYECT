@@ -17,11 +17,11 @@
 
 enum SYNC_OPTIONS
 {
-    SYNC_FACEBOOK,
-    SYNC_LINKEDIN,
-    SYNC_GMAIL,
-    SYNC_YAHOO,
-    SYNC_CONTACTS
+    SYNC_CONTACTS = 1,
+    SYNC_FACEBOOK = 2,
+    SYNC_LINKEDIN = 3,
+    SYNC_GMAIL = 4,
+    SYNC_YAHOO = 5
 };
 @protocol socialLoginDelegate <NSObject>
 

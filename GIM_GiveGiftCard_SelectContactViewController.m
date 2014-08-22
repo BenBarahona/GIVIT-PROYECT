@@ -60,8 +60,14 @@
     if([vc isKindOfClass:[GIM_SocialSynViewController class]])
     {
         self.isInviteContacts = YES;
+        GIM_SocialSynViewController *social = (GIM_SocialSynViewController *)vc;
+        UIButton *dummy = [UIButton buttonWithType:UIButtonTypeCustom];
+        dummy.tag = social.selectedOption;
+        [self didTapToSocialSync:dummy];
     }
     
+    self.sendGiftTableView.sectionIndexTrackingBackgroundColor = [UIColor lightGrayColor];
+    self.sendGiftTableView.sectionIndexBackgroundColor = [UIColor lightGrayColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -308,28 +314,54 @@
 #pragma mark -------------------------------------------
 
 - (IBAction)didTapToContinue:(id)sender {
-    NSString *email = @"a@a.m";
-    for (int i=0; i<selectArray.count; i++) {
-        for (int j=0; j<[[selectArray objectAtIndex:i] count]; j++) {
-            if ([[[selectArray objectAtIndex:i] objectAtIndex:j]isEqualToString:@"yes"]) {
-                email = [NSString stringWithFormat:@"%@,%@",email,[[[[contactDetail objectAtIndex:i] valueForKey:@"Objects"] objectAtIndex:j]valueForKey:@"username"]];
+    if(self.isInviteContacts)
+    {
+        if([MFMailComposeViewController canSendMail])
+        {
+            NSString *emailCaption = @"";
+            
+            MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+            mailViewController.mailComposeDelegate = self;
+            
+            [mailViewController setSubject:@""];
+            [mailViewController setMessageBody:emailCaption isHTML:YES];
+            
+            [self.navigationController presentViewController:mailViewController animated:YES completion:^{
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            }];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Please select at least one contact to send gift card" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        
+    }
+    else
+    {
+        NSString *email = @"a@a.m";
+        for (int i=0; i<selectArray.count; i++) {
+            for (int j=0; j<[[selectArray objectAtIndex:i] count]; j++) {
+                if ([[[selectArray objectAtIndex:i] objectAtIndex:j]isEqualToString:@"yes"]) {
+                    email = [NSString stringWithFormat:@"%@,%@",email,[[[[contactDetail objectAtIndex:i] valueForKey:@"Objects"] objectAtIndex:j]valueForKey:@"username"]];
+                }
             }
         }
-    }
-    if (email.length>5) {
-        email = [email substringFromIndex:6];
-    }
-    else{
-        email =@"";
-    }
-    if (email.length >0) {
-        [_paymentDict setValue:email forKey:@"email"];
-        [self performSegueWithIdentifier:@"didUploadBuyGift" sender:self];
-    }
-    else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"Please select at least one contact to send gift card" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        alert.tag = 10;
-        [alert show];
+        if (email.length>5) {
+            email = [email substringFromIndex:6];
+        }
+        else{
+            email =@"";
+        }
+        if (email.length >0) {
+            [_paymentDict setValue:email forKey:@"email"];
+            [self performSegueWithIdentifier:@"didUploadBuyGift" sender:self];
+        }
+        else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"Please select at least one contact to send gift card" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            alert.tag = 10;
+            [alert show];
+        }
     }
 }
 
@@ -415,7 +447,7 @@
     if([[segue identifier] isEqualToString:@"SocialLogin"]){
         GIM_SocialSynViewController *social = [segue destinationViewController];
         social.delegate = (id)self;
-        social.
+        //social.
     }
     else if ([[segue identifier] isEqualToString:@"didUploadBuyGift"]){
         GIM_BuyGiftCardUploadViewController *upload = [segue destinationViewController];

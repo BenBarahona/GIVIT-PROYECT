@@ -8,6 +8,7 @@
 
 #import "GIM_SocialSynViewController.h"
 #import "GmailSync.h"
+
 @interface GIM_SocialSynViewController ()
 
 @end
@@ -595,4 +596,6 @@
     [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
 
+-(void)LinkedINNotSuccessFull{
+}
 @end
