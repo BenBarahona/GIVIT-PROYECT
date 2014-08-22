@@ -21,7 +21,31 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
+<<<<<<< HEAD
 	<string>com.isis.pushDev</string>
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+	<string>ian.ideas.com</string>
+=======
+	<string>com.isis.pushDev</string>
+>>>>>>> FETCH_HEAD
+=======
+	<string>com.isis.pushDev</string>
+>>>>>>> FETCH_HEAD
+=======
+	<string>com.isis.pushDev</string>
+>>>>>>> FETCH_HEAD
+=======
+	<string>com.isis.pushDev</string>
+>>>>>>> FETCH_HEAD
+=======
+	<string>com.isis.pushDev</string>
+>>>>>>> FETCH_HEAD
+>>>>>>> FETCH_HEAD
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

@@ -98,6 +98,11 @@
 //    }
     [[FbMethods sharedManager] setDelegate:(id)self];
     [[FbMethods sharedManager] getFacebookFriendListwithDetail];
+<<<<<<< HEAD
+=======
+    
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+>>>>>>> FETCH_HEAD
 }
 
 -(void)FacebookFriendList:(NSArray *)friendDetails withSuccess:(BOOL)isSuccess{
@@ -107,7 +112,10 @@
         [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
         syncType = @"FBContacts";
         [self.view setUserInteractionEnabled:YES];
+<<<<<<< HEAD
         [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+=======
+>>>>>>> FETCH_HEAD
     }
 }
 
@@ -127,6 +135,10 @@
     else{
         [self addressBookLoader];
     }
+<<<<<<< HEAD
+=======
+    [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+>>>>>>> FETCH_HEAD
 }
 
 -(void)didTapToFetchLinkedInContacts:(id)sender{
@@ -172,9 +184,13 @@
     syncType = @"LinkedInContacts";
     [[NSUserDefaults standardUserDefaults] setValue:friend forKey:@"LinkedInContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+<<<<<<< HEAD
     [self.view setUserInteractionEnabled:YES];
     [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
 }
+=======
+    [self.view setUserInteractionEnabled:YES];}
+>>>>>>> FETCH_HEAD
 
 - (IBAction)didTapToFetchYahooContact:(id)sender {
     [[YahooHandler SharedInstance]Login:NO delegate:self didFinishSelector:@selector(LoginDidFinish:) didFailSelector:@selector(LoginDidFail:)];
@@ -228,7 +244,10 @@
     [self showMessage:@"Contact synchronization completed" withTitle:@"Alert!"];
     syncType = @"GmailContacts";
     [self.view setUserInteractionEnabled:YES];
+<<<<<<< HEAD
     [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+=======
+>>>>>>> FETCH_HEAD
 }
 -(void)didGmailSignInError : (NSString *)error{
     [self showMessage:@"EmailID Password not match" withTitle:@"Welcome!"];
@@ -302,7 +321,10 @@
     [[NSUserDefaults standardUserDefaults] setValue:arrayofContacts forKey:@"LocalContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.view setUserInteractionEnabled:YES];
+<<<<<<< HEAD
     [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+=======
+>>>>>>> FETCH_HEAD
 }
 
 
@@ -373,7 +395,10 @@
     syncType = @"YahooContacts";
     [[NSUserDefaults standardUserDefaults] setValue:yahooContact forKey:@"YahooContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+<<<<<<< HEAD
     [self performSegueWithIdentifier:@"ContactsSegue" sender:self];
+=======
+>>>>>>> FETCH_HEAD
 }
 
 - (void)GetUserContactListDidFail:(NSDictionary *)data{

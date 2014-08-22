@@ -233,6 +233,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *info = [[[contactDetail objectAtIndex:indexPath.section] valueForKey:@"Objects"] objectAtIndex:indexPath.row];
+<<<<<<< HEAD
     NSLog(@"SELECTED: %@", info);
     MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
 	if([MFMessageComposeViewController canSendText])
@@ -249,6 +250,8 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"GivIt" message:@"This device cannot send SMS messages" delegate:nil cancelButtonTitle:@"Continue" otherButtonTitles: nil];
         [alert show];
     }
+=======
+>>>>>>> FETCH_HEAD
     /*
     if ([[[selectArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
         NSMutableArray *arr =[NSMutableArray arrayWithArray:[selectArray objectAtIndex:indexPath.section]];
